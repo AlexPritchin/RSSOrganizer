@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
 
 const RSSListScreen = props => {
   const [rssList, setRssList] = useState([
@@ -33,17 +33,23 @@ const RSSListScreen = props => {
   };
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>RSS Feed</Text>
-      </View>
-      <FlatList
+    // <View style={styles.screen}>
+    //   <View style={styles.headerContainer}>
+    //     <Text style={styles.headerText}>RSS Feed</Text>
+    //   </View>
+    //   <FlatList
+    //     data={rssList}
+    //     keyExtractor={item => item.id}
+    //     renderItem={item => renderRSSListItem(item)}
+    //     style={styles.rssList}
+    //   />
+    // </View>
+    <FlatList
         data={rssList}
-        keyExtractor={item => item.id}
+        //keyExtractor={item => item.id}
         renderItem={item => renderRSSListItem(item)}
         style={styles.rssList}
       />
-    </View>
   );
 };
 
@@ -53,8 +59,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     justifyContent: 'center',
-    height: 90,
-    paddingTop: 35,
+    // height: 90,
+    // paddingTop: 35,
+    height: '10%',
+    paddingTop: Dimensions.get('window').height > 890 ? '9%' : '4%',
     backgroundColor: 'cornflowerblue',
   },
   headerText: {
