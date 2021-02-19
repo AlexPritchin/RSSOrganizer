@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 
-import Colors from './Colors';
+import { Colors } from './Colors';
 
-const defaultStackNavigationOptions = {
+const DefaultStackNavigationOptions = {
     headerStyle: {
         backgroundColor: Colors.backgroundHeaderColor
     },
@@ -12,4 +12,4 @@ const defaultStackNavigationOptions = {
     headerTintColor: Colors.headerTextColor
 };
 
-export {defaultStackNavigationOptions as default};
+export { DefaultStackNavigationOptions };

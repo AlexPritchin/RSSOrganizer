@@ -1,4 +1,4 @@
-export default {
+const Colors = {
     backgroundHeaderColor: 'cornflowerblue',
     headerTextColor: 'white',
     backgroundScreenColor: 'aliceblue',
@@ -7,3 +7,5 @@ export default {
     tabNavigatorActiveTintColor: '#5a8be3',
     tabNavigatorInactiveTintColor: '#a0a0a0'
 };
+
+export { Colors };

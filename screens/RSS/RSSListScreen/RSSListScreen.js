@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import Colors from '../../constants/Colors';
+import { Colors } from '../../../constants/Colors';
 
 const RSSListScreen = props => {
   const [rssList, setRssList] = useState([
@@ -45,8 +45,9 @@ const RSSListScreen = props => {
     },
   ]);
 
-  const renderRSSListItem = itemData => {
+  const renderRSSListItem = (itemData) => {
     return (
+      <TouchableOpacity onPress={() => {}}>
       <View style={styles.rssListItemContainer}>
         <Image
           style={styles.rssListItemImage}
@@ -59,6 +60,7 @@ const RSSListScreen = props => {
           <Text style={styles.rssListItemTitle} numberOfLines={2}>{itemData.item.title}</Text>
         </View>
       </View>
+      </TouchableOpacity>
     );
   };
 

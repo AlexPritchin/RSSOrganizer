@@ -1,13 +1,13 @@
 import { createStackNavigator } from 'react-navigation-stack';
 
-import OrganizerListScreen from '../screens/OrganizerListScreen/OrganizerListScreen';
+import OrganizerListScreen from '../screens/Organizer/OrganizerListScreen/OrganizerListScreen';
 
-import defaultStackNavigationOptions from '../constants/GlobalNavigationOptions';
+import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 
 const OrganizerNavigator = createStackNavigator({
     OrganizerList: OrganizerListScreen
 }, {
-    defaultNavigationOptions: defaultStackNavigationOptions
+    defaultNavigationOptions: DefaultStackNavigationOptions
 });
 
 export default OrganizerNavigator;

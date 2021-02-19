@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import RSSNavigator from './RSSNavigator';
 import OrganizerNavigator from './OrganizerNavigator';
 
-import Colors from '../constants/Colors';
+import { Colors } from '../constants/Colors';
 
 const MainTabNavigator = createBottomTabNavigator({
     RSS: {
