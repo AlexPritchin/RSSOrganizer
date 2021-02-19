@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import { Colors } from '../../../constants/Colors';
+import { RSSScreensNames } from '../../../constants/ScreensNames';
 
 const RSSListScreen = props => {
   const [rssList, setRssList] = useState([
@@ -45,9 +46,13 @@ const RSSListScreen = props => {
     },
   ]);
 
-  const renderRSSListItem = (itemData) => {
+  const renderRSSListItem = (itemData, navigation) => {
     return (
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={() => {
+        navigation.push(RSSScreensNames.RSSDetails, {
+          articleItem: itemData.item
+        });
+      }}>
       <View style={styles.rssListItemContainer}>
         <Image
           style={styles.rssListItemImage}
@@ -67,7 +72,7 @@ const RSSListScreen = props => {
   return (
     <FlatList
       data={rssList}
-      renderItem={item => renderRSSListItem(item)}
+      renderItem={item => renderRSSListItem(item, props.navigation)}
       style={styles.rssList}
     />
   );

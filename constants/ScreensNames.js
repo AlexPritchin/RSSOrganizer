@@ -1,10 +1,10 @@
-const RSS = {
+const RSSScreensNames = {
     RSSList: 'RSSList',
     RSSDetails: 'RSSDetails'
 };
 
-const Organizer = {
+const OrganizerScreensNames = {
     OrganizerList: 'OrganizerList',
 };
 
-export { RSS, Organizer };
+export { RSSScreensNames, OrganizerScreensNames };

@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const RSSDetailsScreen = props => {
+  const articleItem = props.navigation.getParam('articleItem');
 
   return (
     <View>
-      <Text>RSSDetailsScreen</Text>
+      <Text>{articleItem.title}</Text>
     </View>
   );
 };
