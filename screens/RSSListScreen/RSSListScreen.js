@@ -53,21 +53,6 @@ const RSSListScreen = props => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-  headerContainer: {
-    justifyContent: 'center',
-    height: '10%',
-    paddingTop: Dimensions.get('window').height > 890 ? '9%' : '4%',
-    backgroundColor: 'cornflowerblue',
-  },
-  headerText: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-  },
   rssList: {
     paddingHorizontal: 20,
     paddingTop: 20,
