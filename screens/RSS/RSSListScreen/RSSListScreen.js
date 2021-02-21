@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { Colors } from '../../../constants/Colors';
 import { RSSScreensNames } from '../../../constants/ScreensNames';
