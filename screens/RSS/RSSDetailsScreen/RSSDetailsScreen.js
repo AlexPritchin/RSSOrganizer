@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import * as Linking from 'expo-linking';
 
 import { Colors } from '../../../constants/Colors';
 
@@ -13,7 +14,13 @@ const RSSDetailsScreen = props => {
       <Image style={styles.articleImage} source={{uri: articleItem.imageLink}} />
       <Text style={styles.articleDescription}>{articleItem.description}</Text>
       <Text style={styles.articleCreator}>{articleItem.creator}</Text>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={async () => {
+        const openUrlPossible = await Linking.canOpenURL(articleItem.link);
+        console.log('can open url: ' + openUrlPossible);
+        if (openUrlPossible) {
+          Linking.openURL(articleItem.link);
+        }
+      }}>
         <View style={styles.articleLinkContainer}>
         <Text style={styles.articleLinkText}>Open in browser</Text>
         </View>
