@@ -6,8 +6,18 @@ import RSSDetailsScreen from '../screens/RSS/RSSDetailsScreen/RSSDetailsScreen';
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 
 const RSSNavigator = createStackNavigator({
-    RSSList: RSSListScreen,
-    RSSDetails: RSSDetailsScreen
+    RSSList: {
+        screen: RSSListScreen,
+        navigationOptions: {
+            headerTitle: 'NY Times RSS: Europe'
+        }
+    },
+    RSSDetails: {
+        screen: RSSDetailsScreen,
+        navigationOptions: {
+            headerBackTitleVisible: false
+        }
+    }
 }, {
     defaultNavigationOptions: DefaultStackNavigationOptions
 });

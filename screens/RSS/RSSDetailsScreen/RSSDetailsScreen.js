@@ -8,7 +8,7 @@ const RSSDetailsScreen = props => {
 
   return (
     <View style={styles.articleContainer}>
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
       <Text style={styles.articleTitle}>{articleItem.title}</Text>
       <Image style={styles.articleImage} source={{uri: articleItem.imageLink}} />
       <Text style={styles.articleDescription}>{articleItem.description}</Text>
@@ -21,6 +21,14 @@ const RSSDetailsScreen = props => {
     </ScrollView>
     </View>
   );
+};
+
+RSSDetailsScreen.navigationOptions = navigationData => {
+  const articlePubDate = navigationData.navigation.getParam('articleItem').publicationDate;
+
+  return {
+    headerTitle: articlePubDate
+  };
 };
 
 const styles = StyleSheet.create({
