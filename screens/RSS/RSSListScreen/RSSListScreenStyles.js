@@ -1,5 +1,13 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({});
+import { Colors } from '../../../constants/Colors';
+
+const styles = StyleSheet.create({
+    rssList: {
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        backgroundColor: Colors.backgroundScreenColor,
+      }
+});
 
 export default styles;

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 
-import { Colors } from '../../../constants/Colors';
 import { RSSScreensNames } from '../../../constants/ScreensNames';
+
+import RSSListItem from '../../../components/RSS/RSSListItem/RSSListItem';
+
+import styles from './RSSListScreenStyles';
 
 const RSSListScreen = props => {
   const [rssList, setRssList] = useState([
@@ -46,27 +49,16 @@ const RSSListScreen = props => {
     },
   ]);
 
-  const renderRSSListItem = (itemData, navigation) => {
-    return (
-      <TouchableOpacity onPress={() => {
-        navigation.push(RSSScreensNames.RSSDetails, {
-          articleItem: itemData.item
-        });
-      }}>
-      <View style={styles.rssListItemContainer}>
-        <Image
-          style={styles.rssListItemImage}
-          source={{ uri: itemData.item.imageLink }}
-        />
-        <View style={styles.rssListItemTextContainer}>
-          <Text style={styles.rssListItemDate} numberOfLines={1}>
-            {itemData.item.publicationDate}
-          </Text>
-          <Text style={styles.rssListItemTitle} numberOfLines={2}>{itemData.item.title}</Text>
-        </View>
-      </View>
-      </TouchableOpacity>
-    );
+  const listItemPressCallback = (navigation, articleItemToPassToDetails) => {
+    navigation.push(RSSScreensNames.RSSDetails, {
+      articleItem: articleItemToPassToDetails
+    });
+  };
+
+  const renderRSSListItem = (itemData) => {
+    return <RSSListItem articleItem={itemData.item} onListItemPress={() => {
+      listItemPressCallback(props.navigation, itemData.item);
+    }} />;
   };
 
   return (
@@ -77,41 +69,5 @@ const RSSListScreen = props => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  rssList: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    backgroundColor: Colors.backgroundScreenColor,
-  },
-  rssListItemContainer: {
-    flexDirection: 'row',
-    height: 80,
-    width: '100%',
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: Colors.backgroundListItemColor,
-  },
-  rssListItemImage: {
-    flexBasis: 60,
-    resizeMode: 'contain'
-  },
-  rssListItemTextContainer: {
-    justifyContent: 'space-evenly',
-    flex: 1,
-    marginLeft: 10,
-  },
-  rssListItemDate: {
-    fontSize: 12,
-    color: Colors.listItemTitleColor,
-    paddingBottom: 2
-  },
-  rssListItemTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    paddingTop: 2
-  },
-});
 
 export default RSSListScreen;
