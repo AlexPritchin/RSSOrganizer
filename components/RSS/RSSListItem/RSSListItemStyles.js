@@ -12,8 +12,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.backgroundListItemColor,
       },
-      rssListItemImage: {
+      rssListItemImageWeb: {
         flexBasis: 60,
+        resizeMode: 'contain'
+      },
+      rssListItemImageLocal: {
+        height: 60,
+        width: 60,
         resizeMode: 'contain'
       },
       rssListItemTextContainer: {

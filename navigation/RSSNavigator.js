@@ -9,7 +9,7 @@ const RSSNavigator = createStackNavigator({
     RSSList: {
         screen: RSSListScreen,
         navigationOptions: {
-            headerTitle: 'NY Times RSS: Europe'
+            headerTitle: 'The NY Times RSS: Europe'
         }
     },
     RSSDetails: {
