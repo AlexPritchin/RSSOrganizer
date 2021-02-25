@@ -5,6 +5,8 @@ const RSSScreensNames = {
 
 const OrganizerScreensNames = {
     OrganizerList: 'OrganizerList',
+    OrganizerTaskViewerScreen: 'OrganizerTaskViewerScreen',
+    OrganizerTaskEditorScreen: 'OrganizerTaskEditorScreen'
 };
 
 export { RSSScreensNames, OrganizerScreensNames };

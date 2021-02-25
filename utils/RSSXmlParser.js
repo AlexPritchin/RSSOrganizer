@@ -41,7 +41,6 @@ const parseXMLToArrayOfObjects = XMLString => {
     (itemA, itemB) =>
       Date.parse(itemB.publicationDate) > Date.parse(itemA.publicationDate)
   );
-  //return RSSArticleItems;
 };
 
 export { parseXMLToArrayOfObjects };
