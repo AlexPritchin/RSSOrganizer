@@ -7,8 +7,18 @@ import OrganizerTaskEditorScreen from '../screens/Organizer/OrganizerTaskEditorS
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 
 const OrganizerNavigator = createStackNavigator({
-    OrganizerList: OrganizerListScreen,
-    OrganizerTaskViewer: OrganizerTaskViewerScreen,
+    OrganizerList: {
+        screen: OrganizerListScreen,
+        navigationOptions: {
+            headerTitle: 'Tasks'
+        }
+    },
+    OrganizerTaskViewer: {
+        screen: OrganizerTaskViewerScreen,
+        navigationOptions: {
+            headerTitle: 'View task'
+        }
+    },
     OrganizerTaskEditor: OrganizerTaskEditorScreen
 }, {
     defaultNavigationOptions: DefaultStackNavigationOptions

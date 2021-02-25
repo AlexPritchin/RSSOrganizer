@@ -86,7 +86,7 @@ const RSSListScreen = props => {
     <View style={styles.rssListContainer}>
       <FlatList
         data={rssArticlesList}
-        renderItem={item => renderRSSListItem(item, props.navigation)}
+        renderItem={item => renderRSSListItem(item)}
         showsVerticalScrollIndicator={false}
       />
     </View>

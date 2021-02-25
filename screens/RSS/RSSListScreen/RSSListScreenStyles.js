@@ -3,18 +3,19 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
-  loadingIndicatorAndMessageContainer:{
+  loadingIndicatorAndMessageContainer: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20
+    padding: 20,
   },
   messageText: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
-    rssListContainer: {
-        padding: 20,
-        backgroundColor: Colors.backgroundScreenColor,
-      }
+  rssListContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: Colors.backgroundScreenColor,
+  },
 });
 
 export default styles;
