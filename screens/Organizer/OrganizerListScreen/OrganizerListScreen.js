@@ -3,18 +3,20 @@ import { FlatList, View } from 'react-native';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
+import { OrganizerScreensNames } from '../../../constants/ScreensNames';
+
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 
 import styles from './OrganizerListScreenStyles';
 
 const OrganizerListScreen = props => {
   const [tasks, setTasks] = useState([
-    new OrganizerTask(1, '25.02.21' , 'the title', 'the task description')
+    new OrganizerTask('1', '25.02.21' , 'the title', 'the task description')
   ]);
 
-  const listItemPressCallback = (navigation, articleItemToPassToDetails) => {
-    navigation.push(RSSScreensNames.RSSDetails, {
-      articleItem: articleItemToPassToDetails,
+  const listItemPressCallback = (navigation, taskToPassToViewer) => {
+    navigation.push(OrganizerScreensNames.OrganizerTaskViewer, {
+      task: taskToPassToViewer,
     });
   };
 
@@ -23,7 +25,7 @@ const OrganizerListScreen = props => {
       <OrganizerListItem
         taskItem={itemData.item}
         onTaskItemPress={() => {
-          //listItemPressCallback(props.navigation, itemData.item);
+          listItemPressCallback(props.navigation, itemData.item);
         }}
         onTaskItemDelete={() => {}}
       />

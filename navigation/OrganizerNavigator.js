@@ -16,7 +16,8 @@ const OrganizerNavigator = createStackNavigator({
     OrganizerTaskViewer: {
         screen: OrganizerTaskViewerScreen,
         navigationOptions: {
-            headerTitle: 'View task'
+            headerTitle: 'View task',
+            headerBackTitleVisible: false
         }
     },
     OrganizerTaskEditor: OrganizerTaskEditorScreen
