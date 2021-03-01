@@ -4,8 +4,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Colors } from '../../constants/Colors';
 
+import styles from './GeneralHeaderButtonComponentStyles';
+
 const GeneralHeaderButtonComponent = props => {
-  return <HeaderButton {...props} IconComponent={Ionicons} iconSize={29} color={Colors.headerTextColor} />;
+  return (
+    <HeaderButton
+      {...props}
+      IconComponent={Ionicons}
+      iconSize={27}
+      color={Colors.headerTextColor}
+      buttonStyle={props.title === undefined ? {} : styles.buttonStyle}
+    />
+  );
 };
 
 export default GeneralHeaderButtonComponent;

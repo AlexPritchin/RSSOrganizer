@@ -20,7 +20,12 @@ const OrganizerNavigator = createStackNavigator({
             headerBackTitleVisible: false
         }
     },
-    OrganizerTaskEditor: OrganizerTaskEditorScreen
+    OrganizerTaskEditor: {
+        screen: OrganizerTaskEditorScreen,
+        navigationOptions: {
+            headerBackTitleVisible: false
+        }
+    }
 }, {
     defaultNavigationOptions: DefaultStackNavigationOptions
 });

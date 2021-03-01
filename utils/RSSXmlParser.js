@@ -4,6 +4,8 @@ import { decode } from 'html-entities';
 
 import { RSSArticle } from '../models/RSSArticle';
 
+import { dateFormatMask } from '../constants/DateConstants';
+
 const parseXMLToArrayOfObjects = XMLString => {
   const XMLParsedDocument = new XMLParser().parseFromString(XMLString);
   const XMLParsedRSSItems = XMLParsedDocument.getElementsByTagName('item');
@@ -14,7 +16,7 @@ const parseXMLToArrayOfObjects = XMLString => {
     const articlePubDateDateObj = new Date(articlePubDate);
     const articlePubDateFormatted = format(
       articlePubDateDateObj,
-      'E, dd MMM y HH:mm'
+      dateFormatMask
     );
     const articleTtl = XMLParsedRSSItem.getElementsByTagName('title')[0].value;
     const articleTitle = decode(articleTtl, { level: 'xml' });
