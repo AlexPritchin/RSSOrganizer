@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
+import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 
 import styles from './OrganizerListScreenStyles';
 
@@ -41,6 +43,18 @@ const OrganizerListScreen = props => {
       />
     </View>
   );
+};
+
+OrganizerListScreen.navigationOptions = navData => {
+  return {
+    headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+      <Item iconName='add' onPress={() => {
+        navData.navigation.push(OrganizerScreensNames.OrganizerTaskEditor, {
+          mode: 'add'
+        });
+      }} />
+    </HeaderButtons>)
+  };
 };
 
 export default OrganizerListScreen;
