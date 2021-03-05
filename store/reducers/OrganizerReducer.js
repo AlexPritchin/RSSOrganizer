@@ -31,3 +31,5 @@ const organizerReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export { organizerReducer };
