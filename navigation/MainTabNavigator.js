@@ -24,7 +24,8 @@ const MainTabNavigator = createBottomTabNavigator({
 },{
     tabBarOptions: {
         activeTintColor: Colors.tabNavigatorActiveTintColor,
-        inactiveTintColor: Colors.tabNavigatorInactiveTintColor
+        inactiveTintColor: Colors.tabNavigatorInactiveTintColor,
+        keyboardHidesTabBar: true
     }
 });
 

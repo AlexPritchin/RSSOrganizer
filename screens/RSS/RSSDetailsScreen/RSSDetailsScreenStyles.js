@@ -4,7 +4,9 @@ import { Colors } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
   articleContainer: {
+    flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: Colors.headerTextColor
   },
   articleTitle: {
     fontSize: 20,
