@@ -11,17 +11,18 @@ const styles = StyleSheet.create({
   taskDueDate: {
     fontSize: 15,
     fontWeight: 'bold',
+    marginTop: 10
   },
   taskTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 15
+    marginTop: 30
   },
   taskDescription: {
     textAlign: 'justify',
     fontSize: 18,
-    marginTop: 25
+    marginTop: 35
   },
 });
 

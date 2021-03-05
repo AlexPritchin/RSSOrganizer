@@ -19,9 +19,9 @@ const OrganizerListScreen = props => {
 
   const dispatch = useDispatch();
 
-  const listItemPressCallback = (navigation, taskToPassToViewer) => {
+  const listItemPressCallback = (navigation, taskIdToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewer, {
-      task: taskToPassToViewer,
+      taskId: taskIdToPassToViewer,
     });
   };
 
@@ -34,7 +34,7 @@ const OrganizerListScreen = props => {
       <OrganizerListItem
         taskItem={itemData.item}
         onTaskItemPress={() => {
-          listItemPressCallback(props.navigation, itemData.item);
+          listItemPressCallback(props.navigation, itemData.item.id);
         }}
         onTaskItemDelete={() => {
           listItemDeleteCallback(itemData.item.id);
