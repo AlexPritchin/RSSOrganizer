@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
@@ -9,17 +10,23 @@ import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 
+import { deleteTask } from '../../../store/actions/OrganizerActions';
+
 import styles from './OrganizerListScreenStyles';
 
 const OrganizerListScreen = props => {
-  const [tasks, setTasks] = useState([
-    new OrganizerTask('1', '25.02.21' , 'the title', 'the task description')
-  ]);
+  const tasks = useSelector(state => state.organizerTasks.tasks);
+
+  const dispatch = useDispatch();
 
   const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewer, {
       task: taskToPassToViewer,
     });
+  };
+
+  const listItemDeleteCallback = (taskId) => {
+    dispatch(deleteTask(taskId));
   };
 
   const renderOrganizerTaskItem = itemData => {
@@ -29,7 +36,9 @@ const OrganizerListScreen = props => {
         onTaskItemPress={() => {
           listItemPressCallback(props.navigation, itemData.item);
         }}
-        onTaskItemDelete={() => {}}
+        onTaskItemDelete={() => {
+          listItemDeleteCallback(itemData.item.id);
+        }}
       />
     );
   };

@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { format } from 'date-fns';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
@@ -17,7 +16,6 @@ import {
   OrganizerEditorModes,
   OrganizerDatePickerModes,
 } from '../../../constants/OrganizerConstants';
-import { dateFormatMask } from '../../../constants/DateConstants';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 
