@@ -9,9 +9,9 @@ const OrganizerListActions = {
     delete: 'Delete'
 };
 
-const OrganizerDatePickerModes = {
+const OrganizerDateTimePickerModes = {
     date: 'date',
     time: 'time'
 };
 
-export { OrganizerEditorModes, OrganizerListActions, OrganizerDatePickerModes };
+export { OrganizerEditorModes, OrganizerListActions, OrganizerDateTimePickerModes };

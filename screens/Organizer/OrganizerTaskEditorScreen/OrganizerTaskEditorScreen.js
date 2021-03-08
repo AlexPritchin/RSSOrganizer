@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -6,60 +6,102 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Alert
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import {
   OrganizerEditorModes,
-  OrganizerDatePickerModes,
+  OrganizerDateTimePickerModes,
 } from '../../../constants/OrganizerConstants';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 
+import { addTask, editTask } from '../../../store/actions/OrganizerActions';
+
 import styles from './OrganizerTaskEditorScreenStyles';
 
 const OrganizerTaskEditorScreen = props => {
-  const taskToEdit = props.navigation.getParam('taskToEdit');
+  const taskToEditId = props.navigation.getParam('taskToEditId');
+  
   const editorMode = useRef(
-    taskToEdit === undefined
+    taskToEditId === undefined
       ? OrganizerEditorModes.add
       : OrganizerEditorModes.edit
   );
 
-  const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [datePickerCurrentMode, setDatePickerCurrentMode] = useState(
-    OrganizerDatePickerModes.date
-  );
-  const [taskDate, setTaskDate] = useState(
-    editorMode.current === OrganizerEditorModes.add
-      ? new Date()
-      : taskToEdit.dueDate
-  );
-  const [taskTitle, setTaskTitle] = useState(
-    editorMode.current === OrganizerEditorModes.add ? '' : taskToEdit.title
-  );
-  const [taskDescription, setTaskDescription] = useState(
-    editorMode.current === OrganizerEditorModes.add
-      ? ''
-      : taskToEdit.description
-  );
+  const getTaskToAddOrEdit = useCallback(() => {
+    if (editorMode.current === OrganizerEditorModes.add) {
+      return new OrganizerTask('0', new Date(), '', '');
+    }
+    const tasks = useSelector(state => state.organizerTasks.tasks);
+    return tasks.find(task => task.id === taskToEditId);
+  }, []);
 
-  const formattedDateString = format(taskDate, dateFormatMask);
+  const [taskToAddOrEdit, setTaskToAddOrEdit] = useState(getTaskToAddOrEdit());
+  const [dateTimePickerVisible, setDateTimePickerVisible] = useState(false);
+  const [dateTimePickerCurrentMode, setDateTimePickerCurrentMode] = useState(
+    OrganizerDateTimePickerModes.date
+  );
+    
+  const dateTimePickerInitialMinimumDate = useRef(taskToAddOrEdit.dueDate);
 
-  const showDatePicker = () => setDatePickerVisible(true);
-  const hideDatePicker = () => setDatePickerVisible(false);
+  const dispatch = useDispatch();
+
+  const validateInputs = () => taskToAddOrEdit.title !== '' && taskToAddOrEdit.description !== '';
+
+  const saveTask = useCallback(() => {
+    if (!validateInputs()) {
+      Alert.alert('Validation error', 'All fields must be filled');
+      return;
+    }
+    if (editorMode.current === OrganizerEditorModes.add) {
+      dispatch(addTask(taskToAddOrEdit));
+    } else {
+      dispatch(editTask(taskToAddOrEdit));
+    }
+    props.navigation.pop();
+  }, [taskToAddOrEdit]);
+
+  useEffect(() => {
+    props.navigation.setParams({saveTaskCallback: saveTask});
+  }, [saveTask]);
+
+  const titleTextInputTextChangeHandler = newText => {
+    setTaskToAddOrEdit(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.title = newText;
+      return newTask;
+    });
+  };
+
+  const descriptionTextInputTextChangeHandler = newText => {
+    setTaskToAddOrEdit(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.description = newText;
+      return newTask;
+    });
+  };
+
+  const showDateTimePicker = () => setDateTimePickerVisible(true);
+  const hideDateTimePicker = () => setDateTimePickerVisible(false);
 
   const setTaskDateHandler = newDate => {
-    hideDatePicker();
-    setTaskDate(newDate);
-    if (datePickerCurrentMode === OrganizerDatePickerModes.date) {
-      setDatePickerCurrentMode(OrganizerDatePickerModes.time);
-      showDatePicker();
+    hideDateTimePicker();
+    setTaskToAddOrEdit(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.dueDate = newDate;
+      return newTask;
+    });
+    if (dateTimePickerCurrentMode === OrganizerDateTimePickerModes.date) {
+      setDateTimePickerCurrentMode(OrganizerDateTimePickerModes.time);
+      showDateTimePicker();
     } else {
-      setDatePickerCurrentMode(OrganizerDatePickerModes.date);
+      setDateTimePickerCurrentMode(OrganizerDateTimePickerModes.date);
     }
   };
 
@@ -70,38 +112,39 @@ const OrganizerTaskEditorScreen = props => {
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}
         >
-          <TouchableWithoutFeedback onPress={showDatePicker}>
+          <TouchableWithoutFeedback onPress={showDateTimePicker}>
             <View style={styles.taskDateContainer}>
-              <Text>{formattedDateString}</Text>
+              <Text>{taskToAddOrEdit.formattedDueDate}</Text>
             </View>
           </TouchableWithoutFeedback>
           <TextInput
             style={styles.taskTitleInput}
             selectionColor={'black'}
             placeholder="Task title"
-            onChangeText={newText => setTaskTitle(newText)}
-            value={taskTitle}
+            onChangeText={titleTextInputTextChangeHandler}
+            value={taskToAddOrEdit.title}
           />
           <TextInput
             style={styles.taskDecriptionInput}
             selectionColor={'black'}
             placeholder="Task description"
             multiline={true}
-            maxLength={400}
-            numberOfLines={15}
-            onChangeText={newText => setTaskDescription(newText)}
-            value={taskDescription}
+            maxLength={500}
+            onChangeText={descriptionTextInputTextChangeHandler}
+            value={taskToAddOrEdit.description}
           />
           <DateTimePickerModal
-            isVisible={datePickerVisible}
+            isVisible={dateTimePickerVisible}
             mode={
-              datePickerCurrentMode === OrganizerDatePickerModes.date
+              dateTimePickerCurrentMode === OrganizerDateTimePickerModes.date
                 ? 'date'
                 : 'time'
             }
-            date={taskDate}
+            minimumDate={dateTimePickerInitialMinimumDate.current}
+            date={taskToAddOrEdit.dueDate}
+            locale='en_GB'
             onConfirm={setTaskDateHandler}
-            onCancel={hideDatePicker}
+            onCancel={hideDateTimePicker}
           />
         </ScrollView>
       </View>
@@ -110,12 +153,13 @@ const OrganizerTaskEditorScreen = props => {
 };
 
 OrganizerTaskEditorScreen.navigationOptions = navData => {
-  const taskToEdit = navData.navigation.getParam('taskToEdit');
+  const taskToEditId = navData.navigation.getParam('taskToEditId');
+  const saveTask = navData.navigation.getParam('saveTaskCallback');
   return {
-    headerTitle: taskToEdit === undefined ? 'Add task' : 'Edit task',
+    headerTitle: taskToEditId === undefined ? 'Add task' : 'Edit task',
     headerRight: (
       <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-        <Item title="Save" onPress={() => {}} />
+        <Item title="Save" onPress={saveTask} />
       </HeaderButtons>
     ),
   };
