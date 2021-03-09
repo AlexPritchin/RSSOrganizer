@@ -7,15 +7,15 @@ import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 
-import styles from './OrganizerTaskViewerScreenStyles';
+import styles from './OrganizerTaskViewerEditorScreenStyles';
 
-const OrganizerTaskViewerScreen = props => {
+const OrganizerTaskViewerEditorScreen = props => {
   const taskItemId = props.navigation.getParam('taskId');
   const tasks = useSelector(state => state.organizerTasks.tasks);
   const taskToShow = tasks.find(task => task.id === taskItemId);
 
   const showEditorCallback = useCallback(() => {
-    props.navigation.push(OrganizerScreensNames.OrganizerTaskEditor, {
+    props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
       taskToEditId: taskItemId
     });
   }, [taskItemId]);
@@ -33,7 +33,7 @@ const OrganizerTaskViewerScreen = props => {
   );
 };
 
-OrganizerTaskViewerScreen.navigationOptions = navData => {
+OrganizerTaskViewerEditorScreen.navigationOptions = navData => {
   const showEditorCallback = navData.navigation.getParam('showEditor');
   return {
     headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
@@ -42,4 +42,4 @@ OrganizerTaskViewerScreen.navigationOptions = navData => {
   };
 };
 
-export default OrganizerTaskViewerScreen;
+export default OrganizerTaskViewerEditorScreen;

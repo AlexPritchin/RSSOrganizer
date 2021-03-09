@@ -23,7 +23,7 @@ const OrganizerListScreen = props => {
   const dispatch = useDispatch();
 
   const listItemPressCallback = (navigation, taskIdToPassToViewer) => {
-    navigation.push(OrganizerScreensNames.OrganizerTaskViewer, {
+    navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
       taskId: taskIdToPassToViewer,
     });
   };
@@ -98,7 +98,7 @@ OrganizerListScreen.navigationOptions = navData => {
   return {
     headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
       <Item iconName='add' onPress={() => {
-        navData.navigation.push(OrganizerScreensNames.OrganizerTaskEditor, {
+        navData.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
           mode: 'add'
         });
       }} />

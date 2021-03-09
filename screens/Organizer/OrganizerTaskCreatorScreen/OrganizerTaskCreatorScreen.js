@@ -24,9 +24,9 @@ import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/G
 
 import { addTask, editTask } from '../../../store/actions/OrganizerActions';
 
-import styles from './OrganizerTaskEditorScreenStyles';
+import styles from './OrganizerTaskCreatorScreenStyles';
 
-const OrganizerTaskEditorScreen = props => {
+const OrganizerTaskCreatorScreen = props => {
   const taskToEditId = props.navigation.getParam('taskToEditId');
   
   const editorMode = useRef(
@@ -153,7 +153,7 @@ const OrganizerTaskEditorScreen = props => {
   );
 };
 
-OrganizerTaskEditorScreen.navigationOptions = navData => {
+OrganizerTaskCreatorScreen.navigationOptions = navData => {
   const taskToEditId = navData.navigation.getParam('taskToEditId');
   const saveTask = navData.navigation.getParam('saveTaskCallback');
   return {
@@ -166,4 +166,4 @@ OrganizerTaskEditorScreen.navigationOptions = navData => {
   };
 };
 
-export default OrganizerTaskEditorScreen;
+export default OrganizerTaskCreatorScreen;

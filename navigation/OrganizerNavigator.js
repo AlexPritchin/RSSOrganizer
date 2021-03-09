@@ -1,8 +1,8 @@
 import { createStackNavigator } from 'react-navigation-stack';
 
 import OrganizerListScreen from '../screens/Organizer/OrganizerListScreen/OrganizerListScreen';
-import OrganizerTaskViewerScreen from '../screens/Organizer/OrganizerTaskViewerScreen/OrganizerTaskViewerScreen';
-import OrganizerTaskEditorScreen from '../screens/Organizer/OrganizerTaskEditorScreen/OrganizerTaskEditorScreen';
+import OrganizerTaskViewerEditorScreen from '../screens/Organizer/OrganizerTaskViewerEditorScreen/OrganizerTaskViewerEditorScreen';
+import OrganizerTaskCreatorScreen from '../screens/Organizer/OrganizerTaskCreatorScreen/OrganizerTaskCreatorScreen';
 
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 
@@ -13,15 +13,15 @@ const OrganizerNavigator = createStackNavigator({
             headerTitle: 'Tasks'
         }
     },
-    OrganizerTaskViewer: {
-        screen: OrganizerTaskViewerScreen,
+    OrganizerTaskViewerEditor: {
+        screen: OrganizerTaskViewerEditorScreen,
         navigationOptions: {
             headerTitle: 'View task',
             headerBackTitleVisible: false
         }
     },
-    OrganizerTaskEditor: {
-        screen: OrganizerTaskEditorScreen,
+    OrganizerTaskCreator: {
+        screen: OrganizerTaskCreatorScreen,
         navigationOptions: {
             headerBackTitleVisible: false
         }
