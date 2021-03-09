@@ -1,28 +1,25 @@
 import React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { TouchableHighlight, View, Text } from 'react-native';
+
+import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 
 import styles from './OrganizerListItemStyles';
 
 const OrganizerListItem = props => {
+  const textDecorationLineToApply = props.taskItem.status === OrganizerTaskStatuses.completed ? 'line-through' : 'none';
   return (
-    <TouchableOpacity onPress={props.onTaskItemPress}>
+    <TouchableHighlight activeOpacity={0.4} underlayColor='white' onPress={props.onTaskItemPress}>
       <View style={styles.organizerListItemContainer}>
         <View style={styles.organizerListItemTextContainer}>
-          <Text style={styles.organizerListItemDate} numberOfLines={1}>
+          <Text style={{...styles.organizerListItemDate, textDecorationLine: textDecorationLineToApply}} numberOfLines={1}>
             {props.taskItem.formattedCreationDate}
           </Text>
-          <Text style={styles.organizerListItemTitle} numberOfLines={2}>
+          <Text style={{...styles.organizerListItemTitle, textDecorationLine: textDecorationLineToApply}} numberOfLines={2}>
             {props.taskItem.title}
           </Text>
         </View>
-        <TouchableOpacity onPress={props.onTaskItemDelete}>
-          <View style={styles.organizerListItemDeleteContainer}>
-              <FontAwesome name='trash' color={'red'} size={25}/>
-          </View>
-      </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 };
 

@@ -27,12 +27,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingTop: 1,
   },
-  organizerListItemDeleteContainer: {
-    flexBasis: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 7
-  },
 });
 
 export default styles;
