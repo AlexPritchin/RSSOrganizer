@@ -10,6 +10,28 @@ import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/G
 import styles from './OrganizerTaskViewerEditorScreenStyles';
 
 const OrganizerTaskViewerEditorScreen = props => {
+
+
+  // const taskToEditId = props.navigation.getParam('taskToEditId');
+
+  // const editorMode = useRef(
+  //   taskToEditId === undefined
+  //     ? OrganizerEditorModes.add
+  //     : OrganizerEditorModes.edit
+  // );
+
+  // const getTaskToAddOrEdit = useCallback(() => {
+  //   if (editorMode.current === OrganizerEditorModes.add) {
+  //     return new OrganizerTask('0', new Date(), '', '', OrganizerTaskStatuses.active);
+  //   }
+  //   const tasks = useSelector(state => state.organizerTasks.tasks);
+  //   return tasks.find(task => task.id === taskToEditId);
+  // }, []);
+
+
+
+
+
   const taskItemId = props.navigation.getParam('taskId');
   const tasks = useSelector(state => state.organizerTasks.tasks);
   const taskToShow = tasks.find(task => task.id === taskItemId);

@@ -8,16 +8,9 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: Colors.headerTextColor,
   },
-  taskDateContainer: {
-    height: 30,
-    width: '50%',
-    justifyContent: 'flex-end',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.tabNavigatorActiveTintColor,
-  },
   taskTitleInput: {
-    marginTop: Platform.OS === 'ios' ? 50 : 40,
-    marginBottom: 60,
+    marginTop: Platform.OS === 'ios' ? 40 : 30,
+    marginBottom: 70,
     borderBottomWidth: 1,
     borderBottomColor: Colors.tabNavigatorActiveTintColor,
   },

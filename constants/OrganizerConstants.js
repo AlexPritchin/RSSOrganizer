@@ -15,14 +15,8 @@ const OrganizerTaskStatuses = {
   deleted: 'deleted',
 };
 
-const OrganizerDateTimePickerModes = {
-  date: 'date',
-  time: 'time',
-};
-
 export {
   OrganizerListActions,
   OrganizerEditorModes,
   OrganizerTaskStatuses,
-  OrganizerDateTimePickerModes,
 };
