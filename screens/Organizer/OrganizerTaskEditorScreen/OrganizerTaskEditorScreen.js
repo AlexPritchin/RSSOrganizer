@@ -16,6 +16,7 @@ import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import {
   OrganizerEditorModes,
+  OrganizerTaskStatuses,
   OrganizerDateTimePickerModes,
 } from '../../../constants/OrganizerConstants';
 
@@ -36,7 +37,7 @@ const OrganizerTaskEditorScreen = props => {
 
   const getTaskToAddOrEdit = useCallback(() => {
     if (editorMode.current === OrganizerEditorModes.add) {
-      return new OrganizerTask('0', new Date(), '', '');
+      return new OrganizerTask('0', new Date(), '', '', OrganizerTaskStatuses.active);
     }
     const tasks = useSelector(state => state.organizerTasks.tasks);
     return tasks.find(task => task.id === taskToEditId);
@@ -48,7 +49,7 @@ const OrganizerTaskEditorScreen = props => {
     OrganizerDateTimePickerModes.date
   );
     
-  const dateTimePickerInitialMinimumDate = useRef(taskToAddOrEdit.dueDate);
+  const dateTimePickerInitialMinimumDate = useRef(taskToAddOrEdit.creationDate);
 
   const dispatch = useDispatch();
 
@@ -94,7 +95,7 @@ const OrganizerTaskEditorScreen = props => {
     hideDateTimePicker();
     setTaskToAddOrEdit(currentTask => {
       const newTask = OrganizerTask.copyFromInstance(currentTask);
-      newTask.dueDate = newDate;
+      newTask.creationDate = newDate;
       return newTask;
     });
     if (dateTimePickerCurrentMode === OrganizerDateTimePickerModes.date) {
@@ -114,7 +115,7 @@ const OrganizerTaskEditorScreen = props => {
         >
           <TouchableWithoutFeedback onPress={showDateTimePicker}>
             <View style={styles.taskDateContainer}>
-              <Text>{taskToAddOrEdit.formattedDueDate}</Text>
+              <Text>{taskToAddOrEdit.formattedCreationDate}</Text>
             </View>
           </TouchableWithoutFeedback>
           <TextInput
@@ -141,7 +142,7 @@ const OrganizerTaskEditorScreen = props => {
                 : 'time'
             }
             minimumDate={dateTimePickerInitialMinimumDate.current}
-            date={taskToAddOrEdit.dueDate}
+            date={taskToAddOrEdit.creationDate}
             locale='en_GB'
             onConfirm={setTaskDateHandler}
             onCancel={hideDateTimePicker}

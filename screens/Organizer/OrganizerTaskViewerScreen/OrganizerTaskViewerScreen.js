@@ -26,7 +26,7 @@ const OrganizerTaskViewerScreen = props => {
 
   return (
     <View style={styles.taskContainer}>
-      <Text style={styles.taskDueDate}>{taskToShow.formattedDueDate}</Text>
+      <Text style={styles.taskDueDate}>{taskToShow.formattedCreationDate}</Text>
       <Text style={styles.taskTitle}>{taskToShow.title}</Text>
       <Text style={styles.taskDescription}>{taskToShow.description}</Text>
     </View>

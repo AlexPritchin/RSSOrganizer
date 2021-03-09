@@ -10,7 +10,7 @@ const OrganizerListItem = props => {
       <View style={styles.organizerListItemContainer}>
         <View style={styles.organizerListItemTextContainer}>
           <Text style={styles.organizerListItemDate} numberOfLines={1}>
-            {props.taskItem.formattedDueDate}
+            {props.taskItem.formattedCreationDate}
           </Text>
           <Text style={styles.organizerListItemTitle} numberOfLines={2}>
             {props.taskItem.title}
