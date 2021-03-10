@@ -3,18 +3,18 @@ import { StyleSheet, Platform } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
-  taskContainer: {
+  container: {
     flex: 1,
     padding: 20,
     backgroundColor: Colors.headerTextColor,
   },
-  taskTitleInput: {
+  titleInput: {
     marginTop: Platform.OS === 'ios' ? 40 : 30,
     marginBottom: 70,
     borderBottomWidth: 1,
     borderBottomColor: Colors.tabNavigatorActiveTintColor,
   },
-  taskDecriptionInput: {
+  decriptionInput: {
     textAlignVertical: 'top',
     paddingHorizontal: 10,
     paddingVertical: 5,

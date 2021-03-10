@@ -5,7 +5,8 @@ const Colors = {
     backgroundListItemColor: '#C3DEF4',
     listItemTitleColor: 'dimgray',
     tabNavigatorActiveTintColor: '#5a8be3',
-    tabNavigatorInactiveTintColor: '#a0a0a0'
+    tabNavigatorInactiveTintColor: '#a0a0a0',
+    textInputsSelectionColor: 'black'
 };
 
 export { Colors };

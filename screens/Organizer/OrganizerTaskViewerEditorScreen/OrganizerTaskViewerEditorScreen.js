@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, Alert, TouchableWithoutFeedback, ScrollView, TextInput, Keyboard } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { OrganizerTask } from '../../../models/OrganizerTask';
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
+import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
 
 import { editTask } from '../../../store/actions/OrganizerActions';
 
@@ -43,6 +44,17 @@ const OrganizerTaskViewerEditorScreen = props => {
     });
   }, [toggleScreenModeAndSaveTask]);
 
+  const validateInputs = () => taskItem.title !== '' && taskItem.description !== '';
+  
+  const updateTaskFromTextFieldsEditor = (editorData) => {
+    setTaskItem(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.title = editorData.title;
+      newTask.description = editorData.description;
+      return newTask;
+    });
+  };
+
   if (screenMode === OrganizerViewerEditorModes.view) {
     return (
       <View style={styles.taskContainer}>
@@ -53,50 +65,12 @@ const OrganizerTaskViewerEditorScreen = props => {
     );
   };
 
-  const validateInputs = () => taskItem.title !== '' && taskItem.description !== '';
-  
-  const titleTextInputTextChangeHandler = newText => {
-    setTaskItem(currentTask => {
-      const newTask = OrganizerTask.copyFromInstance(currentTask);
-      newTask.title = newText;
-      return newTask;
-    });
-  };
-
-  const descriptionTextInputTextChangeHandler = newText => {
-    setTaskItem(currentTask => {
-      const newTask = OrganizerTask.copyFromInstance(currentTask);
-      newTask.description = newText;
-      return newTask;
-    });
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.taskContainer2}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          alwaysBounceVertical={false}
-        >
-          <TextInput
-            style={styles.taskTitleInput}
-            selectionColor={'black'}
-            placeholder="Task title"
-            onChangeText={titleTextInputTextChangeHandler}
-            value={taskItem.title}
-          />
-          <TextInput
-            style={styles.taskDecriptionInput}
-            selectionColor={'black'}
-            placeholder="Task description"
-            multiline={true}
-            maxLength={500}
-            onChangeText={descriptionTextInputTextChangeHandler}
-            value={taskItem.description}
-          />
-        </ScrollView>
-      </View>
-    </TouchableWithoutFeedback>
+    <OrganizerTextFiledsEditor
+      initialTaskTitle={taskItem.title}
+      initialTaskDescription={taskItem.description}
+      updateTaskCallback={updateTaskFromTextFieldsEditor}
+    />
   );
 
 };
