@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -9,7 +9,7 @@ import {
   Alert
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
@@ -25,9 +25,7 @@ const OrganizerTaskCreatorScreen = props => {
   const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', new Date(), '', '', OrganizerTaskStatuses.active));
 
   const dispatch = useDispatch();
-
-  const validateInputs = () => taskToAdd.title !== '' && taskToAdd.description !== '';
-
+  
   const saveTask = useCallback(() => {
     if (!validateInputs()) {
       Alert.alert('Validation error', 'All fields must be filled');
@@ -36,10 +34,12 @@ const OrganizerTaskCreatorScreen = props => {
     dispatch(addTask(taskToAdd));
     props.navigation.pop();
   }, [taskToAdd]);
-
+  
   useEffect(() => {
     props.navigation.setParams({saveTaskCallback: saveTask});
   }, [saveTask]);
+  
+  const validateInputs = () => taskToAdd.title !== '' && taskToAdd.description !== '';
 
   const titleTextInputTextChangeHandler = newText => {
     setTaskToAdd(currentTask => {

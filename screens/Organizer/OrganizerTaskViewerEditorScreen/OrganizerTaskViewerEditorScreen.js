@@ -1,65 +1,113 @@
-import React, { useCallback, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, Alert, TouchableWithoutFeedback, ScrollView, TextInput, Keyboard } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { OrganizerScreensNames } from '../../../constants/ScreensNames';
+import { OrganizerTask } from '../../../models/OrganizerTask';
+
+import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
+
+import { editTask } from '../../../store/actions/OrganizerActions';
 
 import styles from './OrganizerTaskViewerEditorScreenStyles';
 
 const OrganizerTaskViewerEditorScreen = props => {
-
-
-  // const taskToEditId = props.navigation.getParam('taskToEditId');
-
-  // const editorMode = useRef(
-  //   taskToEditId === undefined
-  //     ? OrganizerEditorModes.add
-  //     : OrganizerEditorModes.edit
-  // );
-
-  // const getTaskToAddOrEdit = useCallback(() => {
-  //   if (editorMode.current === OrganizerEditorModes.add) {
-  //     return new OrganizerTask('0', new Date(), '', '', OrganizerTaskStatuses.active);
-  //   }
-  //   const tasks = useSelector(state => state.organizerTasks.tasks);
-  //   return tasks.find(task => task.id === taskToEditId);
-  // }, []);
-
-
-
-
-
   const taskItemId = props.navigation.getParam('taskId');
   const tasks = useSelector(state => state.organizerTasks.tasks);
-  const taskToShow = tasks.find(task => task.id === taskItemId);
+  const taskToShowAndEdit = tasks.find(task => task.id === taskItemId);
+  
+  const [screenMode, setScreenMode] = useState(OrganizerViewerEditorModes.view);
+  const [taskItem, setTaskItem] = useState(taskToShowAndEdit);
 
-  const showEditorCallback = useCallback(() => {
-    props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
-      taskToEditId: taskItemId
-    });
-  }, [taskItemId]);
+  const dispatch = useDispatch();
+
+  const toggleScreenModeAndSaveTask = useCallback(() => {
+    if (screenMode === OrganizerViewerEditorModes.view) {
+      setScreenMode(OrganizerViewerEditorModes.edit);
+      return;
+    }
+    if (!validateInputs()) {
+      Alert.alert('Validation error', 'All fields must be filled');
+      return;
+    }
+    dispatch(editTask(taskItem));
+    setScreenMode(OrganizerViewerEditorModes.view);
+  }, [screenMode, taskItem]);
 
   useEffect(() => {
-    props.navigation.setParams({showEditor: showEditorCallback});
-  }, [showEditorCallback]);
+    props.navigation.setParams({
+      currentScreenMode: screenMode,
+      toggleScreenModeCallback: toggleScreenModeAndSaveTask
+    });
+  }, [toggleScreenModeAndSaveTask]);
+
+  if (screenMode === OrganizerViewerEditorModes.view) {
+    return (
+      <View style={styles.taskContainer}>
+        <Text style={styles.taskCreationDate}>{taskItem.formattedCreationDate}</Text>
+        <Text style={styles.taskTitle}>{taskItem.title}</Text>
+        <Text style={styles.taskDescription}>{taskItem.description}</Text>
+      </View>
+    );
+  };
+
+  const validateInputs = () => taskItem.title !== '' && taskItem.description !== '';
+  
+  const titleTextInputTextChangeHandler = newText => {
+    setTaskItem(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.title = newText;
+      return newTask;
+    });
+  };
+
+  const descriptionTextInputTextChangeHandler = newText => {
+    setTaskItem(currentTask => {
+      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      newTask.description = newText;
+      return newTask;
+    });
+  };
 
   return (
-    <View style={styles.taskContainer}>
-      <Text style={styles.taskDueDate}>{taskToShow.formattedCreationDate}</Text>
-      <Text style={styles.taskTitle}>{taskToShow.title}</Text>
-      <Text style={styles.taskDescription}>{taskToShow.description}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.taskContainer2}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}
+        >
+          <TextInput
+            style={styles.taskTitleInput}
+            selectionColor={'black'}
+            placeholder="Task title"
+            onChangeText={titleTextInputTextChangeHandler}
+            value={taskItem.title}
+          />
+          <TextInput
+            style={styles.taskDecriptionInput}
+            selectionColor={'black'}
+            placeholder="Task description"
+            multiline={true}
+            maxLength={500}
+            onChangeText={descriptionTextInputTextChangeHandler}
+            value={taskItem.description}
+          />
+        </ScrollView>
+      </View>
+    </TouchableWithoutFeedback>
   );
+
 };
 
 OrganizerTaskViewerEditorScreen.navigationOptions = navData => {
-  const showEditorCallback = navData.navigation.getParam('showEditor');
+  const screenMode = navData.navigation.getParam('currentScreenMode');
+  const toggleScreenModeCallback = navData.navigation.getParam('toggleScreenModeCallback');
   return {
+    headerTitle: screenMode === OrganizerViewerEditorModes.edit ? 'Edit task' : 'View task',
     headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-      <Item title='Edit' onPress={showEditorCallback} />
+      <Item title={screenMode === OrganizerViewerEditorModes.edit ? 'Save' : 'Edit'} onPress={toggleScreenModeCallback} />
     </HeaderButtons>)
   };
 };

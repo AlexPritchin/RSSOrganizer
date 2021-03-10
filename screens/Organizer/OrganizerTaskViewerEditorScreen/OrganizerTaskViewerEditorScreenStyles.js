@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: Colors.headerTextColor
   },
-  taskDueDate: {
+  taskCreationDate: {
     fontSize: 15,
     fontWeight: 'bold',
     marginTop: 10
@@ -23,6 +23,26 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     fontSize: 18,
     marginTop: 35
+  },
+
+
+  taskContainer2: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: Colors.headerTextColor,
+  },
+  taskTitleInput: {
+    marginTop: Platform.OS === 'ios' ? 40 : 30,
+    marginBottom: 70,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.tabNavigatorActiveTintColor,
+  },
+  taskDecriptionInput: {
+    textAlignVertical: 'top',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: Colors.tabNavigatorActiveTintColor,
   },
 });
 

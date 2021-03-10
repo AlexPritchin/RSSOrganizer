@@ -4,8 +4,8 @@ const OrganizerListActions = {
   delete: 'Delete',
 };
 
-const OrganizerEditorModes = {
-  add: 'Add',
+const OrganizerViewerEditorModes = {
+  view: 'View',
   edit: 'Edit',
 };
 
@@ -17,6 +17,6 @@ const OrganizerTaskStatuses = {
 
 export {
   OrganizerListActions,
-  OrganizerEditorModes,
+  OrganizerViewerEditorModes,
   OrganizerTaskStatuses,
 };

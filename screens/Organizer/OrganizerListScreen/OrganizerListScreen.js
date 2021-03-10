@@ -98,9 +98,7 @@ OrganizerListScreen.navigationOptions = navData => {
   return {
     headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
       <Item iconName='add' onPress={() => {
-        navData.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
-          mode: 'add'
-        });
+        navData.navigation.push(OrganizerScreensNames.OrganizerTaskCreator);
       }} />
     </HeaderButtons>)
   };
