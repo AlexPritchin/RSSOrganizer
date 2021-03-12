@@ -3,9 +3,9 @@ import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { OrganizerTask } from '../../../models/OrganizerTask';
-
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
+
+import { formatDateToString } from '../../../utils/DateFormatter';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
@@ -48,7 +48,7 @@ const OrganizerTaskViewerEditorScreen = props => {
   
   const updateTaskFromTextFieldsEditor = (editorData) => {
     setTaskItem(currentTask => {
-      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      const newTask = Object.assign({}, currentTask);
       newTask.title = editorData.title;
       newTask.description = editorData.description;
       return newTask;
@@ -58,7 +58,7 @@ const OrganizerTaskViewerEditorScreen = props => {
   if (screenMode === OrganizerViewerEditorModes.view) {
     return (
       <View style={styles.taskContainer}>
-        <Text style={styles.taskCreationDate}>{taskItem.formattedCreationDate}</Text>
+        <Text style={styles.taskCreationDate}>{formatDateToString(taskItem.creationDate)}</Text>
         <Text style={styles.taskTitle}>{taskItem.title}</Text>
         <Text style={styles.taskDescription}>{taskItem.description}</Text>
       </View>

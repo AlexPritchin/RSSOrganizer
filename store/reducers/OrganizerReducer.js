@@ -4,9 +4,9 @@ import { ADD_TASK, EDIT_TASK, DELETE_TASK } from '../actions/OrganizerActions';
 
 const initialState = {
   tasks: [
-    new OrganizerTask('1', new Date(), 'Task 1 title', 'Task 1 description', OrganizerTaskStatuses.active),
-    new OrganizerTask('2', new Date(), 'Task 2 title', 'Task 2 description', OrganizerTaskStatuses.active),
-    new OrganizerTask('3', new Date(), 'Task 3 title', 'Task 3 description', OrganizerTaskStatuses.active),
+    new OrganizerTask('1', new Date().getTime(), 'Task 1 title', 'Task 1 description', OrganizerTaskStatuses.active),
+    new OrganizerTask('2', new Date().getTime(), 'Task 2 title', 'Task 2 description', OrganizerTaskStatuses.active),
+    new OrganizerTask('3', new Date().getTime(), 'Task 3 title', 'Task 3 description', OrganizerTaskStatuses.active),
   ],
   highestId: 3,
 };

@@ -13,7 +13,7 @@ import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTe
 import { addTask } from '../../../store/actions/OrganizerActions';
 
 const OrganizerTaskCreatorScreen = props => {
-  const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', new Date(), '', '', OrganizerTaskStatuses.active));
+  const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', new Date().getTime(), '', '', OrganizerTaskStatuses.active));
 
   const dispatch = useDispatch();
   
@@ -34,7 +34,7 @@ const OrganizerTaskCreatorScreen = props => {
 
   const updateTaskFromTextFieldsEditor = (editorData) => {
     setTaskToAdd(currentTask => {
-      const newTask = OrganizerTask.copyFromInstance(currentTask);
+      const newTask = Object.assign({}, currentTask);
       newTask.title = editorData.title;
       newTask.description = editorData.description;
       return newTask;

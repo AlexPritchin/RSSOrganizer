@@ -3,6 +3,8 @@ import { TouchableHighlight, View, Text } from 'react-native';
 
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 
+import { formatDateToString } from '../../../utils/DateFormatter';
+
 import styles from './OrganizerListItemStyles';
 
 const OrganizerListItem = props => {
@@ -12,7 +14,7 @@ const OrganizerListItem = props => {
       <View style={styles.organizerListItemContainer}>
         <View style={styles.organizerListItemTextContainer}>
           <Text style={{...styles.organizerListItemDate, textDecorationLine: textDecorationLineToApply}} numberOfLines={1}>
-            {props.taskItem.formattedCreationDate}
+            {formatDateToString(props.taskItem.creationDate)}
           </Text>
           <Text style={{...styles.organizerListItemTitle, textDecorationLine: textDecorationLineToApply}} numberOfLines={2}>
             {props.taskItem.title}
