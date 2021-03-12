@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 
@@ -9,8 +8,6 @@ import { formatDateToString } from '../../../utils/DateFormatter';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
-
-import { editTask } from '../../../store/actions/OrganizerActions';
 
 import styles from './OrganizerTaskViewerEditorScreenStyles';
 

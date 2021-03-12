@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, View, Dimensions, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -12,8 +11,6 @@ import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants'
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
-
-import { editTask, deleteTask } from '../../../store/actions/OrganizerActions';
 
 import styles from './OrganizerListScreenStyles';
 

@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useDispatch } from 'react-redux';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
@@ -9,8 +8,6 @@ import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
-
-import { addTask } from '../../../store/actions/OrganizerActions';
 
 const OrganizerTaskCreatorScreen = props => {
   const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', new Date().getTime(), '', '', OrganizerTaskStatuses.active));
