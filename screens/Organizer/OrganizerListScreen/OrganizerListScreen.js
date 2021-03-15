@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Alert, Platform } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Alert, Platform, Text, ActivityIndicator } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { FontAwesome } from '@expo/vector-icons';
@@ -38,12 +38,22 @@ const OrganizerListScreen = props => {
 
   const sqlBoolResultCallback = result => {
     if (!result) {
-      setDataLoadingStatus(DataLoadingStatuses.error);
+      Alert.alert('Database error', 'An error occured. Please try again later.');
       return;
     }
     selectSQLTasks(tasksReceivingCallback);
     setDataLoadingStatus(DataLoadingStatuses.loading);
   };
+
+  const goToTaskCreatorScreen = useCallback(() => {
+    props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
+      refreshTasksCallback: sqlBoolResultCallback
+    });
+  }, []);
+
+  useEffect(() => {
+    props.navigation.setParams({goToTaskCreatorCallback: goToTaskCreatorScreen});
+  }, [goToTaskCreatorScreen]);
 
   const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
@@ -90,8 +100,8 @@ const OrganizerListScreen = props => {
   const renderOrganizerTaskHiddenItem = () => {
     return (
       <View style={styles.organizerListItemHiddenItem}>
-              <FontAwesome name='trash' color={'red'} size={25}/>
-          </View>
+          <FontAwesome name='trash' color={'red'} size={25}/>
+      </View>
     );
   };
 
@@ -153,11 +163,10 @@ const OrganizerListScreen = props => {
 };
 
 OrganizerListScreen.navigationOptions = navData => {
+  const goToTaskCreator = navData.navigation.getParam('goToTaskCreatorCallback');
   return {
     headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-      <Item iconName='add' onPress={() => {
-        navData.navigation.push(OrganizerScreensNames.OrganizerTaskCreator);
-      }} />
+      <Item iconName='add' onPress={goToTaskCreator} />
     </HeaderButtons>)
   };
 };

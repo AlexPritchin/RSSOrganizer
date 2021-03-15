@@ -28,9 +28,8 @@ const selectSQLTasks = (tasksSelectedCallback) => {
         transaction => {
             transaction.executeSql(
                 `SELECT * FROM Tasks
-                 WHERE Status != 'Deleted'
-                 GROUP BY Status
-                 ORDER BY CreationDate DESC`,
+                 WHERE Status != 'deleted'
+                 ORDER BY Status, CreationDate DESC`,
                 [],
                 (_, resultSet) => {
                     const tasksArray = convertSQLObjectsArrayToTasksArray(resultSet.rows._array);
@@ -82,7 +81,7 @@ const deleteSQLTask = (taskToDeleteId, resultCallback) => {
         transaction => {
             transaction.executeSql(
                 `UPDATE Tasks
-                 SET Status = 'Deleted'
+                 SET Status = 'deleted'
                  WHERE ID = ?`,
                 [taskToDeleteId],
                 (_, __) => resultCallback(true),

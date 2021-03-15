@@ -2,9 +2,13 @@ import React from 'react';
 import { enableScreens } from 'react-native-screens';
 import { LogBox } from 'react-native';
 
+import { initializeDatabase } from './services/data/Organizer/OrganizerDBDataService';
+
 import MainNavigator from './navigation/MainTabNavigator';
 
 enableScreens();
+
+initializeDatabase();
 
 export default function App() {
   LogBox.ignoreLogs([
@@ -14,4 +18,4 @@ export default function App() {
   return (
     <MainNavigator />
   );
-}
+};

@@ -15,6 +15,14 @@ const styles = StyleSheet.create({
         paddingTop: 27,
         paddingRight: 10
       },
+      loadingIndicatorAndMessageContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+      },
+      messageText: {
+        textAlign: 'center',
+      },
 });
 
 export default styles;

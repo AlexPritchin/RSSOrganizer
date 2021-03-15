@@ -6,21 +6,32 @@ import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 
+import { addSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
+
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
 
 const OrganizerTaskCreatorScreen = props => {
-  const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', new Date().getTime(), '', '', OrganizerTaskStatuses.active));
-
-  const dispatch = useDispatch();
+  const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', 0, '', '', OrganizerTaskStatuses.active));
   
+  const listScreenRefreshCallback = props.navigation.getParam('refreshTasksCallback');
+
+  const sqlBoolResultCallback = result => {
+    if (!result) {
+      Alert.alert('Database error', 'An error occured. Please try again later.');
+      return;
+    }
+    listScreenRefreshCallback(true);
+    props.navigation.pop();
+  };
+
   const saveTask = useCallback(() => {
     if (!validateInputs()) {
       Alert.alert('Validation error', 'All fields must be filled');
       return;
     }
-    dispatch(addTask(taskToAdd));
-    props.navigation.pop();
+    taskToAdd.creationDate = new Date().getTime();
+    addSQLTask(taskToAdd, sqlBoolResultCallback);
   }, [taskToAdd]);
   
   useEffect(() => {
