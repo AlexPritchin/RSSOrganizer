@@ -57,7 +57,8 @@ const OrganizerListScreen = props => {
 
   const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
-      task: taskToPassToViewer,
+      taskToViewOrUpdate: taskToPassToViewer,
+      refreshTasksCallback: sqlBoolResultCallback
     });
   };
 

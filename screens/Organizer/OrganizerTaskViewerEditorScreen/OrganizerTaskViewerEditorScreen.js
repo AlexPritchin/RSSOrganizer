@@ -6,20 +6,28 @@ import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstant
 
 import { formatDateToString } from '../../../utils/DateFormatter';
 
+import { updateSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
+
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
 
 import styles from './OrganizerTaskViewerEditorScreenStyles';
 
 const OrganizerTaskViewerEditorScreen = props => {
-  const taskItemId = props.navigation.getParam('taskId');
-  const tasks = useSelector(state => state.organizerTasks.tasks);
-  const taskToShowAndEdit = tasks.find(task => task.id === taskItemId);
+  const taskToShowAndEdit = props.navigation.getParam('taskToViewOrUpdate');
+  const listScreenRefreshCallback = props.navigation.getParam('refreshTasksCallback');
   
   const [screenMode, setScreenMode] = useState(OrganizerViewerEditorModes.view);
   const [taskItem, setTaskItem] = useState(taskToShowAndEdit);
 
-  const dispatch = useDispatch();
+  const sqlBoolResultCallback = result => {
+    if (!result) {
+      Alert.alert('Database error', 'An error occured. Please try again later.');
+      return;
+    }
+    listScreenRefreshCallback(true);
+    setScreenMode(OrganizerViewerEditorModes.view);
+  };
 
   const toggleScreenModeAndSaveTask = useCallback(() => {
     if (screenMode === OrganizerViewerEditorModes.view) {
@@ -30,8 +38,7 @@ const OrganizerTaskViewerEditorScreen = props => {
       Alert.alert('Validation error', 'All fields must be filled');
       return;
     }
-    dispatch(editTask(taskItem));
-    setScreenMode(OrganizerViewerEditorModes.view);
+    updateSQLTask(taskItem, sqlBoolResultCallback);
   }, [screenMode, taskItem]);
 
   useEffect(() => {
