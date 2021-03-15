@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { FlatList, View, Dimensions, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Alert, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { FontAwesome } from '@expo/vector-icons';
 
-import { OrganizerTask } from '../../../models/OrganizerTask';
-
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
-import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants'
+import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
+import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
+
+import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
@@ -15,13 +16,38 @@ import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/G
 import styles from './OrganizerListScreenStyles';
 
 const OrganizerListScreen = props => {
-  const tasks = useSelector(state => state.organizerTasks.tasks);
+  const [dataLoadingStatus, setDataLoadingStatus] = useState(DataLoadingStatuses.loading);
+  const [tasks, setTasks] = useState([]);
 
-  const dispatch = useDispatch();
+  const tasksReceivingCallback = tasks => {
+    if (tasks === null) {
+      setDataLoadingStatus(DataLoadingStatuses.error);
+      return;
+    }
+    if (tasks.length === 0) {
+      setDataLoadingStatus(DataLoadingStatuses.noData);
+      return;
+    }
+    setTasks(tasks);
+    setDataLoadingStatus(DataLoadingStatuses.success);
+  };
 
-  const listItemPressCallback = (navigation, taskIdToPassToViewer) => {
+  useEffect(() => {
+    selectSQLTasks(tasksReceivingCallback);
+  }, []);
+
+  const sqlBoolResultCallback = result => {
+    if (!result) {
+      setDataLoadingStatus(DataLoadingStatuses.error);
+      return;
+    }
+    selectSQLTasks(tasksReceivingCallback);
+    setDataLoadingStatus(DataLoadingStatuses.loading);
+  };
+
+  const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
-      taskId: taskIdToPassToViewer,
+      task: taskToPassToViewer,
     });
   };
 
@@ -31,8 +57,8 @@ const OrganizerListScreen = props => {
     }
     const taskToChange = tasks.find(task => task.id === rowData.key);
     taskToChange.status = OrganizerTaskStatuses.completed;
-    dispatch(editTask(taskToChange));
-  }
+    updateSQLTask(taskToChange, sqlBoolResultCallback);
+  };
 
   const deleteTaskAction = rowData => {
     if (!rowData.isActivated) {
@@ -45,7 +71,7 @@ const OrganizerListScreen = props => {
       },
       {
         text: 'Ok',
-        onPress: () => dispatch(deleteTask(rowData.key))
+        onPress: () => deleteSQLTask(rowData.key, sqlBoolResultCallback)
       }
     ]);
   };
@@ -55,7 +81,7 @@ const OrganizerListScreen = props => {
       <OrganizerListItem
         taskItem={itemData.item}
         onTaskItemPress={() => {
-          listItemPressCallback(props.navigation, itemData.item.id);
+          listItemPressCallback(props.navigation, itemData.item);
         }}
       />
     );
@@ -69,7 +95,33 @@ const OrganizerListScreen = props => {
     );
   };
 
-  return (
+  const noDataMessage =
+    'No data from database available at the moment. Please try again later.';
+
+  const errorMessage = 'An error occured. Please try again later.';
+
+  const loadingOutput = (
+    <View style={styles.loadingIndicatorAndMessageContainer}>
+      <ActivityIndicator
+        size={'large'}
+        color={
+          Platform.OS === 'android' ? Colors.tabNavigatorActiveTintColor : ''
+        }
+      />
+    </View>
+  );
+
+  const noDataOrErrorOutput = (
+    <View style={styles.loadingIndicatorAndMessageContainer}>
+      <Text style={styles.messageText}>
+        {dataLoadingStatus === DataLoadingStatuses.noData
+          ? noDataMessage
+          : errorMessage}
+      </Text>
+    </View>
+  );
+
+  const successOutput = (
     <View style={styles.organizerListContainer}>
       <SwipeListView
         data={tasks}
@@ -89,6 +141,15 @@ const OrganizerListScreen = props => {
       />
     </View>
   );
+
+  switch (dataLoadingStatus) {
+    case DataLoadingStatuses.loading:
+      return loadingOutput;
+    case DataLoadingStatuses.success:
+      return successOutput;
+    default:
+      return noDataOrErrorOutput;
+  }
 };
 
 OrganizerListScreen.navigationOptions = navData => {

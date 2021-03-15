@@ -22,7 +22,7 @@ const initializeDatabase = () => {
     );
 };
 
-const selectTasks = (tasksSelectedCallback) => {
+const selectSQLTasks = (tasksSelectedCallback) => {
     const db = openDatabase(databaseName);
     db.transaction(
         transaction => {
@@ -43,7 +43,7 @@ const selectTasks = (tasksSelectedCallback) => {
     );
 };
 
-const addTask = (taskToAdd, resultCallback) => {
+const addSQLTask = (taskToAdd, resultCallback) => {
     const db = openDatabase(databaseName);
     db.transaction(
         transaction => {
@@ -59,7 +59,7 @@ const addTask = (taskToAdd, resultCallback) => {
     );
 };
 
-const updateTask = (taskToUpdate, resultCallback) => {
+const updateSQLTask = (taskToUpdate, resultCallback) => {
     const db = openDatabase(databaseName);
     db.transaction(
         transaction => {
@@ -76,7 +76,7 @@ const updateTask = (taskToUpdate, resultCallback) => {
     );
 };
 
-const deleteTask = (taskToDeleteId, resultCallback) => {
+const deleteSQLTask = (taskToDeleteId, resultCallback) => {
     const db = openDatabase(databaseName);
     db.transaction(
         transaction => {
@@ -93,4 +93,4 @@ const deleteTask = (taskToDeleteId, resultCallback) => {
     );
 };
 
-export { initializeDatabase, selectTasks, addTask, updateTask, deleteTask };
+export { initializeDatabase, selectSQLTasks, addSQLTask, updateSQLTask, deleteSQLTask };
