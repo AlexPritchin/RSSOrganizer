@@ -11,7 +11,7 @@ import { RSSScreensNames } from '../../../constants/ScreensNames';
 import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
 import { Colors } from '../../../constants/Colors';
 
-import { getRSSArticles } from '../../../services/data/RSSDataService';
+import { getRSSArticles } from '../../../services/data/RSS/RSSDataService';
 
 import RSSListItem from '../../../components/RSS/RSSListItem/RSSListItem';
 
