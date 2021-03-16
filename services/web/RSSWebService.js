@@ -5,7 +5,7 @@ const getRSSXML = async () => {
         const RSSresponse = await fetch(RSSbaseURL);
         return RSSresponse.text();
     } catch (error) {
-        return null;
+        throw error;
     }  
 };
 

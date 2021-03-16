@@ -25,14 +25,16 @@ const RSSListScreen = props => {
 
   useEffect(() => {
     const fetchRSSData = async () => {
-      const RSSData = await getRSSArticles();
-      if (RSSData === null) {
+      try {
+        const RSSData = await getRSSArticles();
+        if (RSSData.length === 0) {
+          setDataLoadingStatus(DataLoadingStatuses.noData);
+        } else {
+          setRssArticlesList(RSSData);
+          setDataLoadingStatus(DataLoadingStatuses.success);
+        }
+      } catch (error) {
         setDataLoadingStatus(DataLoadingStatuses.error);
-      } else if (RSSData === []) {
-        setDataLoadingStatus(DataLoadingStatuses.noData);
-      } else {
-        setRssArticlesList(RSSData);
-        setDataLoadingStatus(DataLoadingStatuses.success);
       }
     };
 
