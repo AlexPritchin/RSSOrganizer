@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  FlatList,
-  View,
-  ActivityIndicator,
-  Text,
-  Platform,
-} from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { RSSScreensNames } from '../../../constants/ScreensNames';
 import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
-import { Colors } from '../../../constants/Colors';
 
 import { getRSSArticles } from '../../../services/data/RSS/RSSDataService';
 
 import RSSListItem from '../../../components/RSS/RSSListItem/RSSListItem';
+import DataLoadingView from '../../../components/General/DataLoadingView/DataLoadingView';
+import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
 
 import styles from './RSSListScreenStyles';
 
@@ -63,25 +58,14 @@ const RSSListScreen = props => {
 
   const errorMessage = 'An error occured. Please try again later.';
 
-  const loadingOutput = (
-    <View style={styles.loadingIndicatorAndMessageContainer}>
-      <ActivityIndicator
-        size={'large'}
-        color={
-          Platform.OS === 'android' ? Colors.tabNavigatorActiveTintColor : ''
-        }
-      />
-    </View>
-  );
+  const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
-    <View style={styles.loadingIndicatorAndMessageContainer}>
-      <Text style={styles.messageText}>
-        {dataLoadingStatus === DataLoadingStatuses.noData
-          ? noDataMessage
-          : errorMessage}
-      </Text>
-    </View>
+    <ScreenMessageView
+      messageText={dataLoadingStatus === DataLoadingStatuses.noData
+                    ? noDataMessage
+                    : errorMessage}
+    />
   );
 
   const successOutput = (

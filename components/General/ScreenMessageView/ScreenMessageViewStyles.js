@@ -3,10 +3,14 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
-  rssListContainer: {
+  messageContainer: {
     flex: 1,
+    justifyContent: 'center',
     padding: 20,
     backgroundColor: Colors.backgroundScreenColor,
+  },
+  messageText: {
+    textAlign: 'center',
   },
 });
 
