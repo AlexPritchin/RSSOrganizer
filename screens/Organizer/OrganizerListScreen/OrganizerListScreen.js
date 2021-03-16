@@ -7,6 +7,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
+import { Colors } from '../../../constants/Colors';
+import * as Messages from '../../../constants/MessageConstants';
 
 import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
@@ -42,7 +44,7 @@ const OrganizerListScreen = props => {
 
   const sqlBoolResultCallback = result => {
     if (!result) {
-      Alert.alert('Database error', 'An error occured. Please try again later.');
+      Alert.alert(Messages.alertHeaders.dbError, Messages.alertMessages.error);
       return;
     }
     selectSQLTasks(tasksReceivingCallback);
@@ -79,13 +81,13 @@ const OrganizerListScreen = props => {
     if (!rowData.isActivated) {
       return;
     }
-    Alert.alert('Confirm action', 'Do you really want to delete this task', [
+    Alert.alert(Messages.alertHeaders.confirmAction, Messages.alertMessages.deleteTaskConfirm, [
       {
-        text: 'Cancel',
+        text: Messages.alertButtons.cancel,
         style: 'cancel'
       },
       {
-        text: 'Ok',
+        text: Messages.alertButtons.ok,
         onPress: () => deleteSQLTask(rowData.key, sqlBoolResultCallback)
       }
     ]);
@@ -105,7 +107,7 @@ const OrganizerListScreen = props => {
   const renderOrganizerTaskHiddenItem = () => {
     return (
       <View style={styles.organizerListItemHiddenItem}>
-          <FontAwesome name='trash' color={'red'} size={25}/>
+          <FontAwesome name='trash' color={Colors.deleteIconColor} size={25}/>
       </View>
     );
   };
@@ -114,18 +116,13 @@ const OrganizerListScreen = props => {
     setDataLoadingStatus(DataLoadingStatuses.loading);
   };
 
-  const noDataMessage =
-    'No data from database available at the moment. Please try again later.';
-
-  const errorMessage = 'An error occured. Please try again later.';
-
   const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
       messageText={dataLoadingStatus === DataLoadingStatuses.noData
-                    ? noDataMessage
-                    : errorMessage}
+                    ? Messages.screenMessages.noDataOrganizer
+                    : Messages.screenMessages.error}
       onReloadButtonPress={reloadButtonPressCallback}
     />
   );

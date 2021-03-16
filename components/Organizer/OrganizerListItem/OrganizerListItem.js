@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableHighlight, View, Text } from 'react-native';
 
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
+import { Colors } from '../../../constants/Colors';
 
 import { formatDateToString } from '../../../utils/DateFormatter';
 
@@ -10,7 +11,7 @@ import styles from './OrganizerListItemStyles';
 const OrganizerListItem = props => {
   const textDecorationLineToApply = props.taskItem.status === OrganizerTaskStatuses.completed ? 'line-through' : 'none';
   return (
-    <TouchableHighlight activeOpacity={0.4} underlayColor='white' onPress={props.onTaskItemPress}>
+    <TouchableHighlight activeOpacity={0.4} underlayColor={Colors.headerTextColor} onPress={props.onTaskItemPress}>
       <View style={styles.organizerListItemContainer}>
         <View style={styles.organizerListItemTextContainer}>
           <Text style={{...styles.organizerListItemDate, textDecorationLine: textDecorationLineToApply}} numberOfLines={1}>

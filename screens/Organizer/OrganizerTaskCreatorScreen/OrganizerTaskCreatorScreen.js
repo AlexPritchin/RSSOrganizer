@@ -5,6 +5,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
+import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
 
 import { addSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
@@ -18,7 +19,7 @@ const OrganizerTaskCreatorScreen = props => {
 
   const sqlBoolResultCallback = result => {
     if (!result) {
-      Alert.alert('Database error', 'An error occured. Please try again later.');
+      Alert.alert(alertHeaders.dbError, alertMessages.error);
       return;
     }
     listScreenRefreshCallback(true);
@@ -27,7 +28,7 @@ const OrganizerTaskCreatorScreen = props => {
 
   const saveTask = useCallback(() => {
     if (!validateInputs()) {
-      Alert.alert('Validation error', 'All fields must be filled');
+      Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
       return;
     }
     taskToAdd.creationDate = new Date().getTime();

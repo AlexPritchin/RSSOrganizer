@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native';
 
 import { RSSScreensNames } from '../../../constants/ScreensNames';
 import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
+import { screenMessages } from '../../../constants/MessageConstants';
 
 import { getRSSArticles } from '../../../services/data/RSS/RSSDataService';
 
@@ -59,18 +60,13 @@ const RSSListScreen = props => {
     setDataLoadingStatus(DataLoadingStatuses.loading);
   };
 
-  const noDataMessage =
-    'No RSS data available at the moment. Please try again later.';
-
-  const errorMessage = 'An error occured. Please try again later.';
-
   const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
       messageText={dataLoadingStatus === DataLoadingStatuses.noData
-                    ? noDataMessage
-                    : errorMessage}
+                    ? screenMessages.noDataRSS
+                    : screenMessages.error}
       onReloadButtonPress={reloadButtonPressCallback}
     />
   );

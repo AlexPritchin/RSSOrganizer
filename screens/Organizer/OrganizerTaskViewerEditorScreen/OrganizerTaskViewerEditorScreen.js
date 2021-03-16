@@ -3,6 +3,7 @@ import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
+import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
 
 import { formatDateToString } from '../../../utils/DateFormatter';
 
@@ -22,7 +23,7 @@ const OrganizerTaskViewerEditorScreen = props => {
 
   const sqlBoolResultCallback = result => {
     if (!result) {
-      Alert.alert('Database error', 'An error occured. Please try again later.');
+      Alert.alert(alertHeaders.dbError, alertMessages.error);
       return;
     }
     listScreenRefreshCallback(true);
@@ -35,7 +36,7 @@ const OrganizerTaskViewerEditorScreen = props => {
       return;
     }
     if (!validateInputs()) {
-      Alert.alert('Validation error', 'All fields must be filled');
+      Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
       return;
     }
     updateSQLTask(taskItem, sqlBoolResultCallback);
