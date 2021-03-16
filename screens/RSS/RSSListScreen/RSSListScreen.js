@@ -33,8 +33,10 @@ const RSSListScreen = props => {
       }
     };
 
-    fetchRSSData();
-  }, []);
+    if (dataLoadingStatus === DataLoadingStatuses.loading) {
+      fetchRSSData();
+    }
+  }, [dataLoadingStatus]);
 
   const listItemPressCallback = (navigation, articleItemToPassToDetails) => {
     navigation.push(RSSScreensNames.RSSDetails, {
@@ -53,6 +55,10 @@ const RSSListScreen = props => {
     );
   };
 
+  const reloadButtonPressCallback = () => {
+    setDataLoadingStatus(DataLoadingStatuses.loading);
+  };
+
   const noDataMessage =
     'No RSS data available at the moment. Please try again later.';
 
@@ -65,6 +71,7 @@ const RSSListScreen = props => {
       messageText={dataLoadingStatus === DataLoadingStatuses.noData
                     ? noDataMessage
                     : errorMessage}
+      onReloadButtonPress={reloadButtonPressCallback}
     />
   );
 

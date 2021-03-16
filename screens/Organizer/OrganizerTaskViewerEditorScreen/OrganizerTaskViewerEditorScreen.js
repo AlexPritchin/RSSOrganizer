@@ -8,7 +8,7 @@ import { formatDateToString } from '../../../utils/DateFormatter';
 
 import { updateSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
-import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
+import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
 
 import styles from './OrganizerTaskViewerEditorScreenStyles';

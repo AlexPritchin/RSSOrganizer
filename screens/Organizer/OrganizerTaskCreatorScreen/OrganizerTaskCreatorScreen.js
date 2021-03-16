@@ -8,7 +8,7 @@ import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 
 import { addSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
-import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
+import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
 import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
 
 const OrganizerTaskCreatorScreen = props => {

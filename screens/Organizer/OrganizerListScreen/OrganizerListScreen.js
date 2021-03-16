@@ -11,7 +11,7 @@ import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
 import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
-import GeneralHeaderButtonComponent from '../../../components/NavigationHeader/GeneralHeaderButtonComponent';
+import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
 
 import styles from './OrganizerListScreenStyles';
 

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   articleLinkText: {
-    color: 'white',
+    color: Colors.headerTextColor,
     textAlign: 'center',
   },
 });

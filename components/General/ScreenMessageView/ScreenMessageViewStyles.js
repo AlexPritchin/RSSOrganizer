@@ -12,6 +12,19 @@ const styles = StyleSheet.create({
   messageText: {
     textAlign: 'center',
   },
+  reloadButtonContainer: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: 40,
+    width: '40%',
+    marginTop: 40,
+    borderRadius: 5,
+    backgroundColor: Colors.backgroundHeaderColor,
+  },
+  reloadButtonText: {
+    color: Colors.headerTextColor,
+    textAlign: 'center',
+  }
 });
 
 export default styles;
