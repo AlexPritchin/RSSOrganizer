@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
+
+import BlueButton from '../BlueButton/BlueButton';
 
 import styles from './ScreenMessageViewStyles';
 
@@ -9,11 +11,11 @@ const ScreenMessageView = props => {
       <Text style={styles.messageText}>
         {props.messageText}
       </Text>
-      <TouchableOpacity onPress={props.onReloadButtonPress}>
-          <View style={styles.reloadButtonContainer}>
-              <Text style={styles.reloadButtonText}>{'Reload'}</Text>
-          </View>
-      </TouchableOpacity>
+      <BlueButton
+        style={styles.reloadButton}
+        title='Reload'
+        onButtonPress={props.onReloadButtonPress}
+      />
     </View>
   );
 };

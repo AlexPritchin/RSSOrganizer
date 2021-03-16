@@ -1,7 +1,9 @@
 import React from 'react';
-import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Image } from 'react-native';
 
 import { openURL } from '../../../utils/UrlHelper';
+
+import BlueButton from '../../../components/General/BlueButton/BlueButton';
 
 import styles from './RSSDetailsScreenStyles';
 
@@ -27,11 +29,11 @@ const RSSDetailsScreen = props => {
         />
         <Text style={styles.articleDescription}>{articleItem.description}</Text>
         <Text style={styles.articleCreator}>{articleItem.creator}</Text>
-        <TouchableOpacity onPress={() => openURL(articleItem.link)}>
-          <View style={styles.articleLinkContainer}>
-            <Text style={styles.articleLinkText}>Open in browser</Text>
-          </View>
-        </TouchableOpacity>
+        <BlueButton
+          style={styles.articleLinkButton}
+          title='Open in browser'
+          onButtonPress={() => openURL(articleItem.link)}
+        />
       </ScrollView>
     </View>
   );

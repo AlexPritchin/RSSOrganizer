@@ -3,19 +3,17 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
-  messageContainer: {
-    flex: 1,
+  buttonContainer: {
     justifyContent: 'center',
-    padding: 20,
-    backgroundColor: Colors.backgroundScreenColor,
+    height: 40,
+    marginTop: 40,
+    borderRadius: 5,
+    backgroundColor: Colors.backgroundHeaderColor,
   },
-  messageText: {
+  buttonText: {
+    color: Colors.headerTextColor,
     textAlign: 'center',
-  },
-  reloadButton: {
-    alignSelf: 'center',
-    width: '40%',
-  },
+  }
 });
 
 export default styles;

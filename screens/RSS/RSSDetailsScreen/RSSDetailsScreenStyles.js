@@ -29,17 +29,8 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontSize: 14,
   },
-  articleLinkContainer: {
-    justifyContent: 'center',
-    backgroundColor: Colors.backgroundHeaderColor,
-    borderRadius: 5,
-    height: 40,
-    marginTop: 40,
+  articleLinkButton: {
     marginBottom: 20,
-  },
-  articleLinkText: {
-    color: Colors.headerTextColor,
-    textAlign: 'center',
   },
 });
 
