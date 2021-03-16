@@ -4,12 +4,12 @@ import { Colors } from './Colors';
 
 const DefaultStackNavigationOptions = {
     headerStyle: {
-        backgroundColor: Colors.backgroundHeaderColor
+        backgroundColor: Platform.OS === 'android' ? Colors.backgroundHeaderColor : Colors.backgroundIOSHeaderColor
     },
     headerTitleStyle: {
         fontSize: Platform.OS === 'ios' ? 19 : 20
     },
-    headerTintColor: Colors.headerTextColor
+    headerTintColor: Platform.OS === 'android' ? Colors.headerTextColor : Colors.backgroundHeaderColor
 };
 
 export { DefaultStackNavigationOptions };

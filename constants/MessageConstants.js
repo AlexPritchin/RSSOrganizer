@@ -1,6 +1,6 @@
 const screenMessages = {
     noDataRSS: 'No RSS data available at the moment. Please try again later.',
-    noDataOrganizer: 'No data from database available at the moment. Please try again later.',
+    noDataOrganizer: 'No data from database available at the moment. Please try again later or add some tasks.',
     error: 'An error occured. Please try again later.'
 };
 

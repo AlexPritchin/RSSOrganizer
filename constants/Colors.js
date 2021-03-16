@@ -1,5 +1,6 @@
 const Colors = {
     backgroundHeaderColor: 'cornflowerblue',
+    backgroundIOSHeaderColor: '#fbfbfb',
     headerTextColor: 'white',
     backgroundScreenColor: 'aliceblue',
     backgroundListItemColor: '#C3DEF4',

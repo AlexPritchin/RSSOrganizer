@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { HeaderButton } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -12,7 +13,7 @@ const GeneralHeaderButtonComponent = props => {
       {...props}
       IconComponent={Ionicons}
       iconSize={27}
-      color={Colors.headerTextColor}
+      color={Platform.OS === 'android' ? Colors.headerTextColor : Colors.backgroundHeaderColor}
       buttonStyle={props.title === undefined ? {} : styles.buttonStyle}
     />
   );
