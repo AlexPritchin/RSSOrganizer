@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Alert, Platform, Text, ActivityIndicator } from 'react-native';
+import { View, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { FontAwesome } from '@expo/vector-icons';
@@ -12,6 +12,8 @@ import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
+import DataLoadingView from '../../../components/General/DataLoadingView/DataLoadingView';
+import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
 
 import styles from './OrganizerListScreenStyles';
 
@@ -33,8 +35,10 @@ const OrganizerListScreen = props => {
   };
 
   useEffect(() => {
-    selectSQLTasks(tasksReceivingCallback);
-  }, []);
+    if (dataLoadingStatus === DataLoadingStatuses.loading) {
+      selectSQLTasks(tasksReceivingCallback);
+    }
+  }, [dataLoadingStatus]);
 
   const sqlBoolResultCallback = result => {
     if (!result) {
@@ -106,30 +110,24 @@ const OrganizerListScreen = props => {
     );
   };
 
+  const reloadButtonPressCallback = () => {
+    setDataLoadingStatus(DataLoadingStatuses.loading);
+  };
+
   const noDataMessage =
     'No data from database available at the moment. Please try again later.';
 
   const errorMessage = 'An error occured. Please try again later.';
 
-  const loadingOutput = (
-    <View style={styles.loadingIndicatorAndMessageContainer}>
-      <ActivityIndicator
-        size={'large'}
-        color={
-          Platform.OS === 'android' ? Colors.tabNavigatorActiveTintColor : ''
-        }
-      />
-    </View>
-  );
+  const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
-    <View style={styles.loadingIndicatorAndMessageContainer}>
-      <Text style={styles.messageText}>
-        {dataLoadingStatus === DataLoadingStatuses.noData
-          ? noDataMessage
-          : errorMessage}
-      </Text>
-    </View>
+    <ScreenMessageView
+      messageText={dataLoadingStatus === DataLoadingStatuses.noData
+                    ? noDataMessage
+                    : errorMessage}
+      onReloadButtonPress={reloadButtonPressCallback}
+    />
   );
 
   const successOutput = (
