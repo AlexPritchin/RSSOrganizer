@@ -14,6 +14,7 @@ export default function App() {
   LogBox.ignoreLogs([
     'It appears that you are using old version of react-navigation library',
     'Deprecation in \'navigationOptions\'',
+    'Your project is accessing'
   ]);
   return (
     <MainNavigator />

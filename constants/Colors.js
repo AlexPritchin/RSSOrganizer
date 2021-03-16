@@ -3,12 +3,15 @@ const Colors = {
     backgroundIOSHeaderColor: '#fbfbfb',
     headerTextColor: 'white',
     backgroundScreenColor: 'aliceblue',
-    backgroundListItemColor: '#C3DEF4',
+    backgroundListItemColor: '#c3def4',
     listItemTitleColor: 'dimgray',
+    textInputsSelectionColor: 'black',
+    deleteIconColor: 'red',
     tabNavigatorActiveTintColor: '#5a8be3',
     tabNavigatorInactiveTintColor: '#a0a0a0',
-    textInputsSelectionColor: 'black',
-    deleteIconColor: 'red'
+    tabNavigatorMaterialRSSColor: '#1f65ff',
+    tabNavigatorMaterialOrganizerColor: '#6518f4',
+    tabNavigatorMaterialInactiveColor: '#ffffff8f',
 };
 
 export { Colors };
