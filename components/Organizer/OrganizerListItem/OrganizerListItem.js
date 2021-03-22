@@ -1,5 +1,8 @@
 import React from 'react';
 import { TouchableHighlight, View, Text } from 'react-native';
+import PropTypes from 'prop-types';
+
+import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
 import { Colors } from '../../../constants/Colors';
@@ -24,6 +27,11 @@ const OrganizerListItem = props => {
       </View>
     </TouchableHighlight>
   );
+};
+
+OrganizerListItem.propTypes = {
+  taskItem: PropTypes.instanceOf(OrganizerTask),
+  onTaskItemPress: PropTypes.func
 };
 
 export default OrganizerListItem;

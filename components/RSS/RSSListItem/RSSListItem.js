@@ -1,5 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
+import PropTypes from 'prop-types';
+
+import { RSSArticle } from '../../../models/RSSArticle';
 
 import styles from './RSSListItemStyles';
 
@@ -34,6 +37,11 @@ const RSSListItem = props => {
       </View>
     </TouchableOpacity>
   );
+};
+
+RSSListItem.propTypes = {
+  articleItem: PropTypes.instanceOf(RSSArticle),
+  onListItemPress: PropTypes.func
 };
 
 export default RSSListItem;

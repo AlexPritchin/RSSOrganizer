@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import BlueButton from '../BlueButton/BlueButton';
 
@@ -18,6 +19,11 @@ const ScreenMessageView = props => {
       />
     </View>
   );
+};
+
+ScreenMessageView.propTypes = {
+  messageText: PropTypes.string,
+  onReloadButtonPress: PropTypes.func
 };
 
 export default ScreenMessageView;

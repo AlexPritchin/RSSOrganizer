@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard, View, ScrollView, TextInput } from 'react-native';
+import PropTypes from 'prop-types';
 
 import { Colors } from '../../../constants/Colors';
 
@@ -54,6 +55,12 @@ const OrganizerTextFiledsEditor = props => {
       </View>
     </TouchableWithoutFeedback>
   );
+};
+
+OrganizerTextFiledsEditor.propTypes = {
+  initialTaskTitle: PropTypes.string,
+  initialTaskDescription: PropTypes.string,
+  updateTaskCallback: PropTypes.func
 };
 
 export default OrganizerTextFiledsEditor;
