@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 import { View, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -57,9 +57,13 @@ const OrganizerListScreen = props => {
     });
   }, []);
 
-  useEffect(() => {
-    props.navigation.setParams({goToTaskCreatorCallback: goToTaskCreatorScreen});
-  }, [goToTaskCreatorScreen]);
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+        <Item iconName='add' onPress={goToTaskCreatorScreen} />
+      </HeaderButtons>),
+    });
+  }, [props.navigation, goToTaskCreatorScreen]);
 
   const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
@@ -156,15 +160,6 @@ const OrganizerListScreen = props => {
     default:
       return noDataOrErrorOutput;
   }
-};
-
-OrganizerListScreen.navigationOptions = navData => {
-  const goToTaskCreator = navData.navigation.getParam('goToTaskCreatorCallback');
-  return {
-    headerRight: (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-      <Item iconName='add' onPress={goToTaskCreator} />
-    </HeaderButtons>)
-  };
 };
 
 export default OrganizerListScreen;

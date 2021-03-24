@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { ScrollView, View, Text, Image, Alert } from 'react-native';
 
 import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
@@ -12,7 +12,13 @@ import styles from './RSSDetailsScreenStyles';
 const RSSDetailsScreen = props => {
   const noImageAvailableImageAssetLink = '../../../assets/no-image-available.png';
 
-  const articleItem = props.navigation.getParam('articleItem');
+  const articleItem = props.route.params.articleItem;
+
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerTitle: articleItem.publicationDate,
+    });
+  }, [props.navigation]);
 
   const openUrlCallback = async () => {
     const isUrlOpened = await openURL(articleItem.link);
@@ -20,7 +26,7 @@ const RSSDetailsScreen = props => {
       Alert.alert(alertHeaders.error, alertMessages.error);
       return;
     }
-  }
+  };
 
   return (
     <View style={styles.articleContainer}>
@@ -47,15 +53,6 @@ const RSSDetailsScreen = props => {
       </ScrollView>
     </View>
   );
-};
-
-RSSDetailsScreen.navigationOptions = navigationData => {
-  const articlePubDate = navigationData.navigation.getParam('articleItem')
-    .publicationDate;
-
-  return {
-    headerTitle: articlePubDate,
-  };
 };
 
 export default RSSDetailsScreen;

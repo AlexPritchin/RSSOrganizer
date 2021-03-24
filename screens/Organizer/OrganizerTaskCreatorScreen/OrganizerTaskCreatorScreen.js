@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useLayoutEffect } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -15,7 +15,7 @@ import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTe
 const OrganizerTaskCreatorScreen = props => {
   const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', 0, '', '', OrganizerTaskStatuses.active));
   
-  const listScreenRefreshCallback = props.navigation.getParam('refreshTasksCallback');
+  const listScreenRefreshCallback = props.route.params.refreshTasksCallback;
 
   const sqlBoolResultCallback = result => {
     if (!result) {
@@ -34,10 +34,16 @@ const OrganizerTaskCreatorScreen = props => {
     taskToAdd.creationDate = new Date().getTime();
     addSQLTask(taskToAdd, sqlBoolResultCallback);
   }, [taskToAdd]);
-  
-  useEffect(() => {
-    props.navigation.setParams({saveTaskCallback: saveTask});
-  }, [saveTask]);
+
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+          <Item title="Save" onPress={saveTask} />
+        </HeaderButtons>
+      ),
+    });
+  }, [props.navigation, saveTask]);
   
   const validateInputs = () => taskToAdd.title !== '' && taskToAdd.description !== '';
 
@@ -57,18 +63,6 @@ const OrganizerTaskCreatorScreen = props => {
       updateTaskCallback={updateTaskFromTextFieldsEditor}
     />
   );
-};
-
-OrganizerTaskCreatorScreen.navigationOptions = navData => {
-  const saveTask = navData.navigation.getParam('saveTaskCallback');
-  return {
-    headerTitle: 'Add task',
-    headerRight: (
-      <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-        <Item title="Save" onPress={saveTask} />
-      </HeaderButtons>
-    ),
-  };
 };
 
 export default OrganizerTaskCreatorScreen;

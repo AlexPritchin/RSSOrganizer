@@ -1,10 +1,11 @@
 import React from 'react';
 import { enableScreens } from 'react-native-screens';
 import { LogBox } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import { initializeDatabase } from './services/data/Organizer/OrganizerDBDataService';
 
-import MainNavigator from './navigation/MainTabNavigator';
+import BottomTabNavigator from './navigation/MainTabNavigator';
 
 enableScreens();
 
@@ -17,6 +18,8 @@ export default function App() {
     'Your project is accessing'
   ]);
   return (
-    <MainNavigator />
+    <NavigationContainer>
+      <BottomTabNavigator />
+    </NavigationContainer>
   );
 };

@@ -21,7 +21,11 @@ const parseXMLToArrayOfObjects = XMLString => {
     const articleTtl = XMLParsedRSSItem.getElementsByTagName('title')[0].value;
     const articleTitle = decode(articleTtl, { level: 'xml' });
     const articleDescription = XMLParsedRSSItem.getElementsByTagName('description')[0].value;
-    const articleCreator = XMLParsedRSSItem.getElementsByTagName('dc:creator')[0].value;
+    const articleCreatorArray = XMLParsedRSSItem.getElementsByTagName('dc:creator');
+    let articleCreator = '';
+    if (articleCreatorArray.length !== 0) {
+      articleCreator = articleCreatorArray[0].value;
+    }
     const articleLink = XMLParsedRSSItem.getElementsByTagName('link')[0].value;
     const articleImageLinkElement = XMLParsedRSSItem.getElementsByTagName('media:content');
     let articleImageLink = '';
