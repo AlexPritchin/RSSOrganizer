@@ -17,22 +17,19 @@ const OrganizerTaskCreatorScreen = props => {
   
   const listScreenRefreshCallback = props.route.params.refreshTasksCallback;
 
-  const sqlBoolResultCallback = result => {
-    if (!result) {
-      Alert.alert(alertHeaders.dbError, alertMessages.error);
-      return;
-    }
-    listScreenRefreshCallback(true);
-    props.navigation.pop();
-  };
-
-  const saveTask = useCallback(() => {
+  const saveTask = useCallback(async () => {
     if (!validateInputs()) {
       Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
       return;
     }
-    taskToAdd.creationDate = new Date().getTime();
-    addSQLTask(taskToAdd, sqlBoolResultCallback);
+    try {
+      taskToAdd.creationDate = new Date().getTime();
+      await addSQLTask(taskToAdd);
+      listScreenRefreshCallback();
+      props.navigation.pop();
+    } catch (error) {
+      Alert.alert(alertHeaders.dbError, alertMessages.error);
+    }
   }, [taskToAdd]);
 
   useLayoutEffect(() => {

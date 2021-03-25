@@ -23,37 +23,35 @@ const OrganizerListScreen = props => {
   const [dataLoadingStatus, setDataLoadingStatus] = useState(DataLoadingStatuses.loading);
   const [tasks, setTasks] = useState([]);
 
-  const tasksReceivingCallback = tasks => {
-    if (tasks === null) {
-      setDataLoadingStatus(DataLoadingStatuses.error);
-      return;
+  const selectTasksFromDB = async () => {
+    try {
+      const tasks = await selectSQLTasks(tasksReceivingCallback);
+      if (tasks.length === 0) {
+        setDataLoadingStatus(DataLoadingStatuses.noData);
+        return;
+      }
+      setTasks(tasks);
+      setDataLoadingStatus(DataLoadingStatuses.success);
+    } catch (error) {
+        setDataLoadingStatus(DataLoadingStatuses.error);
     }
-    if (tasks.length === 0) {
-      setDataLoadingStatus(DataLoadingStatuses.noData);
-      return;
-    }
-    setTasks(tasks);
-    setDataLoadingStatus(DataLoadingStatuses.success);
   };
 
   useEffect(() => {
     if (dataLoadingStatus === DataLoadingStatuses.loading) {
-      selectSQLTasks(tasksReceivingCallback);
+      selectTasksFromDB();
     }
   }, [dataLoadingStatus]);
 
-  const sqlBoolResultCallback = result => {
-    if (!result) {
+  const showErrorAlert = () => {
       Alert.alert(Messages.alertHeaders.dbError, Messages.alertMessages.error);
-      return;
-    }
-    selectSQLTasks(tasksReceivingCallback);
-    setDataLoadingStatus(DataLoadingStatuses.loading);
   };
+
+  const forceTasksRefresh = () => setDataLoadingStatus(DataLoadingStatuses.loading);
 
   const goToTaskCreatorScreen = useCallback(() => {
     props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
-      refreshTasksCallback: sqlBoolResultCallback
+      refreshTasksCallback: forceTasksRefresh
     });
   }, []);
 
@@ -68,23 +66,37 @@ const OrganizerListScreen = props => {
   const listItemPressCallback = (navigation, taskToPassToViewer) => {
     navigation.push(OrganizerScreensNames.OrganizerTaskViewerEditor, {
       taskToViewOrUpdate: taskToPassToViewer,
-      refreshTasksCallback: sqlBoolResultCallback
+      refreshTasksCallback: forceTasksRefresh
     });
   };
 
-  const markTaskCompleted = rowData => {
+  const markTaskCompleted = async rowData => {
     if (!rowData.isActivated) {
       return;
     }
-    const taskToChange = tasks.find(task => task.id === rowData.key);
-    taskToChange.status = OrganizerTaskStatuses.completed;
-    updateSQLTask(taskToChange, sqlBoolResultCallback);
+    try {
+      const taskToChange = tasks.find(task => task.id === rowData.key);
+      taskToChange.status = OrganizerTaskStatuses.completed;
+      await updateSQLTask(taskToChange);
+      forceTasksRefresh();
+    } catch (error) {
+      showErrorAlert();
+    }
   };
 
-  const deleteTaskAction = rowData => {
+  const deleteTaskFromDB = async (taskId) => {
+    try {
+      await deleteSQLTask(taskId);
+      forceTasksRefresh();
+    } catch (error) {
+      showErrorAlert();
+    }
+  } 
+
+  const deleteTaskAction = async rowData => {
     if (!rowData.isActivated) {
       return;
-    }
+    } 
     Alert.alert(Messages.alertHeaders.confirmAction, Messages.alertMessages.deleteTaskConfirm, [
       {
         text: Messages.alertButtons.cancel,
@@ -92,7 +104,9 @@ const OrganizerListScreen = props => {
       },
       {
         text: Messages.alertButtons.ok,
-        onPress: () => deleteSQLTask(rowData.key, sqlBoolResultCallback)
+        onPress: async () => {
+          await deleteTaskFromDB(rowData.key);
+        }
       }
     ]);
   };

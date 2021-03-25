@@ -21,16 +21,7 @@ const OrganizerTaskViewerEditorScreen = props => {
   const [screenMode, setScreenMode] = useState(OrganizerViewerEditorModes.view);
   const [taskItem, setTaskItem] = useState(taskToShowAndEdit);
 
-  const sqlBoolResultCallback = result => {
-    if (!result) {
-      Alert.alert(alertHeaders.dbError, alertMessages.error);
-      return;
-    }
-    listScreenRefreshCallback(true);
-    setScreenMode(OrganizerViewerEditorModes.view);
-  };
-
-  const toggleScreenModeAndSaveTask = useCallback(() => {
+  const toggleScreenModeAndSaveTask = useCallback(async () => {
     if (screenMode === OrganizerViewerEditorModes.view) {
       setScreenMode(OrganizerViewerEditorModes.edit);
       return;
@@ -39,7 +30,13 @@ const OrganizerTaskViewerEditorScreen = props => {
       Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
       return;
     }
-    updateSQLTask(taskItem, sqlBoolResultCallback);
+    try {
+      await updateSQLTask(taskItem);
+      listScreenRefreshCallback();
+      setScreenMode(OrganizerViewerEditorModes.view);
+    } catch (error) {
+      Alert.alert(alertHeaders.dbError, alertMessages.error);
+    }
   }, [screenMode, taskItem]);
 
   useLayoutEffect(() => {
