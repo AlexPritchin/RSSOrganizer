@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react'
 import { View, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { FontAwesome } from '@expo/vector-icons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
@@ -111,7 +111,7 @@ const OrganizerListScreen = props => {
   const renderOrganizerTaskHiddenItem = () => {
     return (
       <View style={styles.organizerListItemHiddenItem}>
-          <FontAwesome name='trash' color={Colors.deleteIconColor} size={25}/>
+          <FontAwesomeIcon name='trash' color={Colors.deleteIconColor} size={25}/>
       </View>
     );
   };

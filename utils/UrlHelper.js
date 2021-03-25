@@ -1,4 +1,4 @@
-import * as Linking from 'expo-linking';
+import { Linking } from 'react-native';
 
 const openURL = async URLToOpen => {
   const openUrlPossible = await Linking.canOpenURL(URLToOpen);
