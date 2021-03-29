@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     paddingTop: 1,
+    color: Colors.textInputsSelectionColor
   },
 });
 

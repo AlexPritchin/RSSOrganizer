@@ -11,18 +11,21 @@ const styles = StyleSheet.create({
   taskCreationDate: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginTop: 10
+    marginTop: 10,
+    color: Colors.textInputsSelectionColor
   },
   taskTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 30
+    marginTop: 30,
+    color: Colors.textInputsSelectionColor
   },
   taskDescription: {
     textAlign: 'justify',
     fontSize: 18,
-    marginTop: 35
+    marginTop: 35,
+    color: Colors.textInputsSelectionColor
   },
 });
 

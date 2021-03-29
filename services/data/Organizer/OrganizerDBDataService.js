@@ -46,7 +46,7 @@ const selectSQLTasks = async () => {
             WHERE Status != 'deleted'
             ORDER BY Status, CreationDate DESC`
         );
-        return convertSQLObjectsArrayToTasksArray(rowsArray);
+        return convertSQLObjectsArrayToTasksArray(rowsArray[0].rows.raw());
     } catch (error) {
         return error;
     }

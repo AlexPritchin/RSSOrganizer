@@ -25,7 +25,7 @@ const OrganizerListScreen = props => {
 
   const selectTasksFromDB = async () => {
     try {
-      const tasks = await selectSQLTasks(tasksReceivingCallback);
+      const tasks = await selectSQLTasks();
       if (tasks.length === 0) {
         setDataLoadingStatus(DataLoadingStatuses.noData);
         return;
@@ -33,7 +33,7 @@ const OrganizerListScreen = props => {
       setTasks(tasks);
       setDataLoadingStatus(DataLoadingStatuses.success);
     } catch (error) {
-        setDataLoadingStatus(DataLoadingStatuses.error);
+      setDataLoadingStatus(DataLoadingStatuses.error);
     }
   };
 
