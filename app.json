@@ -1,4 +1,6 @@
 {
+  "name": "rss-organizer",
+  "displayName": "RssOrganizer",
   "expo": {
     "name": "rss-organizer",
     "slug": "rss-organizer",

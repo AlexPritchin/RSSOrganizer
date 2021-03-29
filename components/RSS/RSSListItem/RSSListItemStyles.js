@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
       rssListItemTitle: {
         fontSize: 14,
         fontWeight: 'bold',
-        paddingTop: 2
+        paddingTop: 2,
+        color: Colors.textInputsSelectionColor
       },
 });
 

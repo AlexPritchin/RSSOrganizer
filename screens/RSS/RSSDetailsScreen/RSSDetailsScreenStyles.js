@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 20,
+    color: Colors.textInputsSelectionColor
   },
   articleImage: {
     height: Dimensions.get('window').width - 120,
@@ -23,11 +24,13 @@ const styles = StyleSheet.create({
   articleDescription: {
     textAlign: 'justify',
     fontSize: 16,
+    color: Colors.textInputsSelectionColor
   },
   articleCreator: {
     textAlign: 'right',
     fontStyle: 'italic',
     fontSize: 14,
+    color: Colors.textInputsSelectionColor
   },
   articleLinkButton: {
     marginBottom: 20,

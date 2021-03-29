@@ -9,9 +9,9 @@ const Colors = {
     deleteIconColor: 'red',
     tabNavigatorActiveTintColor: '#5a8be3',
     tabNavigatorInactiveTintColor: '#a0a0a0',
-    tabNavigatorMaterialRSSColor: '#1f65ff',
-    tabNavigatorMaterialOrganizerColor: '#6518f4',
+    tabNavigatorMaterialColor: '#3465bd',
     tabNavigatorMaterialInactiveColor: '#ffffff8f',
+    statusBarBackgroundColor: '#5485dd',
 };
 
 export { Colors };

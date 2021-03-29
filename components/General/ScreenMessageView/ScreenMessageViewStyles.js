@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     textAlign: 'center',
+    color: Colors.textInputsSelectionColor
   },
   reloadButton: {
     alignSelf: 'center',

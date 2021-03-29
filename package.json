@@ -14,6 +14,8 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "date-fns": "^2.17.0",
+    "expo-splash-screen": "^0.9.0",
+    "expo-updates": "^0.4.2",
     "html-entities": "^2.1.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
@@ -36,6 +38,7 @@
     "@babel/core": "~7.9.0",
     "babel-jest": "~25.2.6",
     "jest": "~25.2.6",
+    "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "~16.13.1"
   },
   "private": true,

@@ -22,7 +22,8 @@ const tabNavigatorsScreenOptions = ({ route }) => ({
         }
         return <IoniconsIcon name={iconName} size={23} color={color}/>
     },
-    tabBarColor: () => route.name === 'RSS' ? Colors.tabNavigatorMaterialRSSColor : Colors.tabNavigatorMaterialOrganizerColor
+    // tabBarColor: () => route.name === 'RSS' ? Colors.tabNavigatorMaterialRSSColor : Colors.tabNavigatorMaterialOrganizerColor
+    // tabBarColor: 'yellow'
 });
 
 const IosBottomTabNavigator = () => {
@@ -53,7 +54,8 @@ const AndroidBottomTabNavigator = () => {
             screenOptions={tabNavigatorsScreenOptions}
             activeColor={Colors.headerTextColor}
             inactiveColor={Colors.tabNavigatorMaterialInactiveColor}
-            shifting={true}
+            barStyle={{backgroundColor: Colors.tabNavigatorMaterialColor}}
+            shifting={false}
         >
             <MaterialTab.Screen 
                 name='RSS'
@@ -71,5 +73,6 @@ const BottomTabNavigatorForCurrentPlatform = Platform.select({
                                                 ios: IosBottomTabNavigator,
                                                 android: AndroidBottomTabNavigator
                                             });
+// const BottomTabNavigatorForCurrentPlatform = IosBottomTabNavigator;
 
 export default BottomTabNavigatorForCurrentPlatform;
