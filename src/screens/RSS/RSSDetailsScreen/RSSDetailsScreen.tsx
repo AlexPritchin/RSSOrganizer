@@ -1,15 +1,28 @@
 import React, { useLayoutEffect } from 'react';
 import { ScrollView, View, Text, Image, Alert } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
+import { RSSScreensNames } from '../../../constants/ScreensNames';
 
 import { openURL } from '../../../utils/UrlHelper';
 
 import BlueButton from '../../../components/General/BlueButton/BlueButton';
 
+import { RSSStackParamList } from '../../../navigation/RSSNavigator';
+
 import styles from './RSSDetailsScreenStyles';
 
-const RSSDetailsScreen = props => {
+type RSSDetailScreenNavigationProp = StackNavigationProp<RSSStackParamList, RSSScreensNames.RSSDetails>;
+type RSSDetailScreenRouteProp = RouteProp<RSSStackParamList, RSSScreensNames.RSSDetails>;
+
+type Props = {
+  navigation: RSSDetailScreenNavigationProp;
+  route: RSSDetailScreenRouteProp;
+};
+
+const RSSDetailsScreen: React.FC<Props> = props => {
   const noImageAvailableImageAssetLink = '../../../assets/no-image-available.png';
 
   const articleItem = props.route.params.articleItem;

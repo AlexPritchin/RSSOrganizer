@@ -4,10 +4,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RSSListScreen from '../screens/RSS/RSSListScreen/RSSListScreen';
 import RSSDetailsScreen from '../screens/RSS/RSSDetailsScreen/RSSDetailsScreen';
 
+import { RSSArticle } from '../models/RSSArticle';
+
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 import { RSSScreensNames } from '../constants/ScreensNames';
 
-const Stack = createStackNavigator();
+export type RSSStackParamList = {
+    RSSList: undefined;
+    RSSDetails: { articleItem: RSSArticle };
+}
+
+const Stack = createStackNavigator<RSSStackParamList>();
 
 const RSSNavigator = () => {
     return (

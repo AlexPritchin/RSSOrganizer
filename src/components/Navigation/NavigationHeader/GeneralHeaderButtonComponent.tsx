@@ -7,7 +7,7 @@ import { Colors } from '../../../constants/Colors';
 
 import styles from './GeneralHeaderButtonComponentStyles';
 
-const GeneralHeaderButtonComponent = props => {
+const GeneralHeaderButtonComponent: React.FC<any> = props => {
   return (
     <HeaderButton
       {...props}

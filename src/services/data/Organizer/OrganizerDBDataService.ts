@@ -1,14 +1,19 @@
-import SQLite from 'react-native-sqlite-storage';
+import SQLite, { DatabaseParams } from 'react-native-sqlite-storage';
+
+import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { convertSQLObjectsArrayToTasksArray } from '../../../utils/OrganizerSQLTasksConverter';
 
-const databaseName = 'OrganizerTasksDB';
+const organizerDatabaseParams: DatabaseParams = {
+    name: 'OrganizerTasksDB',
+    location: 'default'
+};
 
 SQLite.enablePromise(true);
 
 const initializeDatabase = async () => {
     try {
-        const db = await SQLite.openDatabase(databaseName);
+        const db = await SQLite.openDatabase(organizerDatabaseParams);
         db.executeSql(
             `CREATE TABLE IF NOT EXISTS Tasks (
             ID integer primary key not null,
@@ -25,7 +30,7 @@ const initializeDatabase = async () => {
 
 const selectSQLTasks = async () => {
     try {
-        const db = await SQLite.openDatabase(databaseName);
+        const db = await SQLite.openDatabase(organizerDatabaseParams);
         const rowsArray = await db.executeSql(
             `SELECT * FROM Tasks
             WHERE Status != 'deleted'
@@ -37,9 +42,9 @@ const selectSQLTasks = async () => {
     }
 };
 
-const addSQLTask = async (taskToAdd) => {
+const addSQLTask = async (taskToAdd: OrganizerTask) => {
     try {
-        const db = await SQLite.openDatabase(databaseName);
+        const db = await SQLite.openDatabase(organizerDatabaseParams);
         await db.executeSql(
             `INSERT INTO Tasks (CreationDate, Title, Description, Status)
             VALUES (?, ?, ?, ?)`,
@@ -54,9 +59,9 @@ const addSQLTask = async (taskToAdd) => {
     }
 };
 
-const updateSQLTask = async (taskToUpdate) => {
+const updateSQLTask = async (taskToUpdate: OrganizerTask) => {
     try {
-        const db = await SQLite.openDatabase(databaseName);
+        const db = await SQLite.openDatabase(organizerDatabaseParams);
         await db.executeSql(
             `UPDATE Tasks
             SET CreationDate = ?, Title = ?, Description = ?, Status = ?
@@ -73,9 +78,9 @@ const updateSQLTask = async (taskToUpdate) => {
     }
 };
 
-const deleteSQLTask = async (taskToDeleteId) => {
+const deleteSQLTask = async (taskToDeleteId: string) => {
     try {
-        const db = await SQLite.openDatabase(databaseName);
+        const db = await SQLite.openDatabase(organizerDatabaseParams);
         await db.executeSql(
             `UPDATE Tasks
             SET Status = 'deleted'

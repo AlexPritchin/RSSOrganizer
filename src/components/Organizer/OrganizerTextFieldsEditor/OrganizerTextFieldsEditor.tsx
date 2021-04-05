@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard, View, ScrollView, TextInput } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { Colors } from '../../../constants/Colors';
 
-import styles from './OrganizerTextFiledsEditorStyles';
+import styles from './OrganizerTextFieldsEditorStyles';
 
-const OrganizerTextFiledsEditor = props => {
+interface Props {
+  initialTaskTitle: string;
+  initialTaskDescription: string;
+  updateTaskCallback: Function;
+};
+
+export interface TaskTextFieldsObject {
+  title: string;
+  description: string;
+};
+
+const OrganizerTextFieldsEditor: React.FC<Props> = props => {
   const { initialTaskTitle, initialTaskDescription, updateTaskCallback } = props;
 
   const [taskTitle, setTaskTitle] = useState(initialTaskTitle);
   const [taskDescription, setTaskDescription] = useState(initialTaskDescription);
 
-  const titleTextInputTextChangeHandler = newText => {
+  const titleTextInputTextChangeHandler = (newText: string) => {
     setTaskTitle(newText);
     updateTaskCallback({
         title: newText,
@@ -20,7 +30,7 @@ const OrganizerTextFiledsEditor = props => {
     });
   };
 
-  const descriptionTextInputTextChangeHandler = newText => {
+  const descriptionTextInputTextChangeHandler = (newText: string) => {
     setTaskDescription(newText);
     updateTaskCallback({
         title: taskTitle,
@@ -57,10 +67,4 @@ const OrganizerTextFiledsEditor = props => {
   );
 };
 
-OrganizerTextFiledsEditor.propTypes = {
-  initialTaskTitle: PropTypes.string,
-  initialTaskDescription: PropTypes.string,
-  updateTaskCallback: PropTypes.func
-};
-
-export default OrganizerTextFiledsEditor;
+export default OrganizerTextFieldsEditor;

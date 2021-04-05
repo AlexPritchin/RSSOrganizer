@@ -1,20 +1,33 @@
 import React, { useState, useCallback, useLayoutEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
+import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 
 import { formatDateToString } from '../../../utils/DateFormatter';
 
 import { updateSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
-import OrganizerTextFiledsEditor from '../../../components/Organizer/OrganizerTextFiledsEditor/OrganizerTextFiledsEditor';
+import OrganizerTextFieldsEditor, { TaskTextFieldsObject } from '../../../components/Organizer/OrganizerTextFieldsEditor/OrganizerTextFieldsEditor';
+
+import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator';
 
 import styles from './OrganizerTaskViewerEditorScreenStyles';
 
-const OrganizerTaskViewerEditorScreen = props => {
+type OrganizerTaskViewerEditorScreenNavigationProp = StackNavigationProp<OrganizerStackParamList, OrganizerScreensNames.OrganizerTaskViewerEditor>;
+type OrganizerTaskViewerEditorScreenRouteProp = RouteProp<OrganizerStackParamList, OrganizerScreensNames.OrganizerTaskViewerEditor>;
+
+type Props = {
+  navigation: OrganizerTaskViewerEditorScreenNavigationProp;
+  route: OrganizerTaskViewerEditorScreenRouteProp;
+};
+
+const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
   const taskToShowAndEdit = props.route.params.taskToViewOrUpdate;
   const listScreenRefreshCallback = props.route.params.refreshTasksCallback;
   
@@ -50,7 +63,7 @@ const OrganizerTaskViewerEditorScreen = props => {
 
   const validateInputs = () => taskItem.title !== '' && taskItem.description !== '';
   
-  const updateTaskFromTextFieldsEditor = (editorData) => {
+  const updateTaskFromTextFieldsEditor = (editorData: TaskTextFieldsObject) => {
     setTaskItem(currentTask => {
       const newTask = Object.assign({}, currentTask);
       newTask.title = editorData.title;
@@ -70,7 +83,7 @@ const OrganizerTaskViewerEditorScreen = props => {
   };
 
   return (
-    <OrganizerTextFiledsEditor
+    <OrganizerTextFieldsEditor
       initialTaskTitle={taskItem.title}
       initialTaskDescription={taskItem.description}
       updateTaskCallback={updateTaskFromTextFieldsEditor}

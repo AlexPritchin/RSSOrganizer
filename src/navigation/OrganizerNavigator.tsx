@@ -5,10 +5,18 @@ import OrganizerListScreen from '../screens/Organizer/OrganizerListScreen/Organi
 import OrganizerTaskViewerEditorScreen from '../screens/Organizer/OrganizerTaskViewerEditorScreen/OrganizerTaskViewerEditorScreen';
 import OrganizerTaskCreatorScreen from '../screens/Organizer/OrganizerTaskCreatorScreen/OrganizerTaskCreatorScreen';
 
+import { OrganizerTask } from '../models/OrganizerTask';
+
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
 import { OrganizerScreensNames } from '../constants/ScreensNames';
 
-const Stack = createStackNavigator();
+export type OrganizerStackParamList = {
+    OrganizerList: undefined;
+    OrganizerTaskCreator: { refreshTasksCallback: Function };
+    OrganizerTaskViewerEditor: { taskToViewOrUpdate: OrganizerTask, refreshTasksCallback: Function };
+}
+
+const Stack = createStackNavigator<OrganizerStackParamList>();
 
 const OrganizerNavigator = () => {
     return (

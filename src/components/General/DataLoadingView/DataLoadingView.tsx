@@ -5,7 +5,7 @@ import { Colors } from '../../../constants/Colors';
 
 import styles from './DataLoadingViewStyles';
 
-const DataLoadingView = props => {
+const DataLoadingView: React.FC<any> = props => {
   return (
     <View style={styles.loadingIndicatorContainer}>
       <ActivityIndicator

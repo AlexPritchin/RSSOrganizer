@@ -1,18 +1,22 @@
 import React from 'react';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { RSSArticle } from '../../../models/RSSArticle';
 
 import styles from './RSSListItemStyles';
 
-const RSSListItem = props => {
+interface Props {
+  articleItem: RSSArticle;
+  onListItemPress: Function;
+};
+
+const RSSListItem: React.FC<Props> = props => {
   const noImageAvailableImageAssetLink = '../../../assets/no-image-available.png';
 
   const { imageLink, publicationDate, title } = props.articleItem;
 
   return (
-    <TouchableOpacity onPress={props.onListItemPress}>
+    <TouchableOpacity onPress={() => props.onListItemPress}>
       <View style={styles.rssListItemContainer}>
         <Image
           style={
@@ -37,11 +41,6 @@ const RSSListItem = props => {
       </View>
     </TouchableOpacity>
   );
-};
-
-RSSListItem.propTypes = {
-  articleItem: PropTypes.instanceOf(RSSArticle),
-  onListItemPress: PropTypes.func
 };
 
 export default RSSListItem;

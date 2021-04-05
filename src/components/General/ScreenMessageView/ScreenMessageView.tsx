@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import BlueButton from '../BlueButton/BlueButton';
 
 import styles from './ScreenMessageViewStyles';
 
-const ScreenMessageView = props => {
+interface Props {
+  messageText: string;
+  onReloadButtonPress: Function;
+};
+
+const ScreenMessageView: React.FC<Props> = props => {
   return (
     <View style={styles.messageContainer}>
       <Text style={styles.messageText}>
@@ -15,15 +19,10 @@ const ScreenMessageView = props => {
       <BlueButton
         style={styles.reloadButton}
         title='Reload'
-        onButtonPress={props.onReloadButtonPress}
+        onButtonPress={() => props.onReloadButtonPress}
       />
     </View>
   );
-};
-
-ScreenMessageView.propTypes = {
-  messageText: PropTypes.string,
-  onReloadButtonPress: PropTypes.func
 };
 
 export default ScreenMessageView;

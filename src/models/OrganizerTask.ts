@@ -1,11 +1,17 @@
 class OrganizerTask {
   id: string;
-  creationDate: Number;
+  creationDate: number;
   title: string;
   description: string;
   status: string;
 
-  constructor(id, creationDate, title, description, status) {
+  constructor(
+    id: string,
+    creationDate: number,
+    title: string,
+    description: string,
+    status: string
+  ) {
     this.id = id;
     this.creationDate = creationDate;
     this.title = title;
