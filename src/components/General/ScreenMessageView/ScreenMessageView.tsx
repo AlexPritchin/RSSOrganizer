@@ -19,7 +19,7 @@ const ScreenMessageView: React.FC<Props> = props => {
       <BlueButton
         style={styles.reloadButton}
         title='Reload'
-        onButtonPress={() => props.onReloadButtonPress}
+        onButtonPress={props.onReloadButtonPress}
       />
     </View>
   );

@@ -16,7 +16,9 @@ const RSSListItem: React.FC<Props> = props => {
   const { imageLink, publicationDate, title } = props.articleItem;
 
   return (
-    <TouchableOpacity onPress={() => props.onListItemPress}>
+    <TouchableOpacity onPress={() => {
+      props.onListItemPress();
+      }}>
       <View style={styles.rssListItemContainer}>
         <Image
           style={

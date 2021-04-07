@@ -11,7 +11,9 @@ interface Props {
 
 const BlueButton: React.FC<Props> = props => {
   return (
-    <TouchableOpacity onPress={() => props.onButtonPress}>
+    <TouchableOpacity onPress={() => {
+      props.onButtonPress();
+    }}>
         <View style={[styles.buttonContainer, props.style]}>
             <Text style={styles.buttonText}>{props.title}</Text>
         </View>

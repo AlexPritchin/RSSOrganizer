@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { View, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useQuery, useMutation } from 'react-query';
 
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 import { OrganizerTaskStatuses } from '../../../constants/OrganizerConstants';
-import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
 import { Colors } from '../../../constants/Colors';
 import * as Messages from '../../../constants/MessageConstants';
 
@@ -37,34 +37,15 @@ interface SwipeViewActionStatusChangeData {
 };
 
 const OrganizerListScreen: React.FC<Props> = props => {
-  const [dataLoadingStatus, setDataLoadingStatus] = useState(DataLoadingStatuses.loading);
-  const [tasks, setTasks] = useState<OrganizerTask[]>([]);
-
-  const selectTasksFromDB = async () => {
-    try {
-      const tasks = await selectSQLTasks();
-      if (tasks.length === 0) {
-        setDataLoadingStatus(DataLoadingStatuses.noData);
-        return;
-      }
-      setTasks(tasks);
-      setDataLoadingStatus(DataLoadingStatuses.success);
-    } catch (error) {
-      setDataLoadingStatus(DataLoadingStatuses.error);
-    }
-  };
-
-  useEffect(() => {
-    if (dataLoadingStatus === DataLoadingStatuses.loading) {
-      selectTasksFromDB();
-    }
-  }, [dataLoadingStatus]);
+  const queryResult = useQuery('selectOrganizerTasks', selectSQLTasks);
+  const updateTaskMutation = useMutation(updateSQLTask);
+  const deleteTaskMutation = useMutation(deleteSQLTask);
 
   const showErrorAlert = () => {
       Alert.alert(Messages.alertHeaders.dbError, Messages.alertMessages.error);
   };
 
-  const forceTasksRefresh = () => setDataLoadingStatus(DataLoadingStatuses.loading);
+  const forceTasksRefresh = () => queryResult.refetch();
 
   const goToTaskCreatorScreen = useCallback(() => {
     props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
@@ -92,10 +73,10 @@ const OrganizerListScreen: React.FC<Props> = props => {
       return;
     }
     try {
-      const taskToChange = tasks.find(task => task.id === rowData.key);
+      const taskToChange = queryResult.data?.find(task => task.id === rowData.key);
       if (taskToChange) {
         taskToChange.status = OrganizerTaskStatuses.completed;
-        await updateSQLTask(taskToChange);
+        await updateTaskMutation.mutateAsync(taskToChange);
         forceTasksRefresh();
       }
     } catch (error) {
@@ -105,12 +86,12 @@ const OrganizerListScreen: React.FC<Props> = props => {
 
   const deleteTaskFromDB = async (taskId: string) => {
     try {
-      await deleteSQLTask(taskId);
+      await deleteTaskMutation.mutateAsync(taskId);
       forceTasksRefresh();
     } catch (error) {
       showErrorAlert();
     }
-  } 
+  };
 
   const deleteTaskAction = async (rowData: SwipeViewActionStatusChangeData) => {
     if (!rowData.isActivated) {
@@ -150,16 +131,16 @@ const OrganizerListScreen: React.FC<Props> = props => {
   };
 
   const reloadButtonPressCallback = () => {
-    setDataLoadingStatus(DataLoadingStatuses.loading);
+    queryResult.refetch();
   };
 
   const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
-      messageText={dataLoadingStatus === DataLoadingStatuses.noData
-                    ? Messages.screenMessages.noDataOrganizer
-                    : Messages.screenMessages.error}
+      messageText={queryResult.isError
+                    ? Messages.screenMessages.error
+                    : Messages.screenMessages.noDataOrganizer}
       onReloadButtonPress={reloadButtonPressCallback}
     />
   );
@@ -167,7 +148,7 @@ const OrganizerListScreen: React.FC<Props> = props => {
   const successOutput = (
     <View style={styles.organizerListContainer}>
       <SwipeListView
-        data={tasks}
+        data={queryResult.data}
         keyExtractor={item => item.id}
         renderItem={itemData => renderOrganizerTaskItem(itemData.item)}
         renderHiddenItem={renderOrganizerTaskHiddenItem}
@@ -185,14 +166,14 @@ const OrganizerListScreen: React.FC<Props> = props => {
     </View>
   );
 
-  switch (dataLoadingStatus) {
-    case DataLoadingStatuses.loading:
-      return loadingOutput;
-    case DataLoadingStatuses.success:
-      return successOutput;
-    default:
-      return noDataOrErrorOutput;
+  if (queryResult.isLoading) {
+    return loadingOutput;
   }
+  if (queryResult.isSuccess) {
+    return successOutput;
+  }
+  return noDataOrErrorOutput;
+  
 };
 
 export default OrganizerListScreen;

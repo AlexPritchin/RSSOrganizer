@@ -18,7 +18,7 @@ interface Props {
 const OrganizerListItem: React.FC<Props> = props => {
   const textDecorationLineToApply = props.taskItem.status === OrganizerTaskStatuses.completed ? 'line-through' : 'none';
   return (
-    <TouchableHighlight activeOpacity={0.4} underlayColor={Colors.headerTextColor} onPress={() => props.onTaskItemPress}>
+    <TouchableHighlight activeOpacity={0.4} underlayColor={Colors.headerTextColor} onPress={() => {props.onTaskItemPress();}}>
       <View style={styles.organizerListItemContainer}>
         <View style={styles.organizerListItemTextContainer}>
           <Text style={{...styles.organizerListItemDate, textDecorationLine: textDecorationLineToApply}} numberOfLines={1}>

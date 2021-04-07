@@ -9,12 +9,14 @@ const organizerDatabaseParams: DatabaseParams = {
     location: 'default'
 };
 
+let mainDB: SQLite.SQLiteDatabase;
+
 SQLite.enablePromise(true);
 
 const initializeDatabase = async () => {
     try {
-        const db = await SQLite.openDatabase(organizerDatabaseParams);
-        db.executeSql(
+        mainDB = await SQLite.openDatabase(organizerDatabaseParams);
+        mainDB.executeSql(
             `CREATE TABLE IF NOT EXISTS Tasks (
             ID integer primary key not null,
             CreationDate integer,
@@ -29,23 +31,16 @@ const initializeDatabase = async () => {
 };
 
 const selectSQLTasks = async () => {
-    try {
-        const db = await SQLite.openDatabase(organizerDatabaseParams);
-        const rowsArray = await db.executeSql(
+        const rowsArray = await mainDB.executeSql(
             `SELECT * FROM Tasks
             WHERE Status != 'deleted'
             ORDER BY Status, CreationDate DESC`
         );
         return convertSQLObjectsArrayToTasksArray(rowsArray[0].rows.raw());
-    } catch (error) {
-        return error;
-    }
 };
 
 const addSQLTask = async (taskToAdd: OrganizerTask) => {
-    try {
-        const db = await SQLite.openDatabase(organizerDatabaseParams);
-        await db.executeSql(
+        await mainDB.executeSql(
             `INSERT INTO Tasks (CreationDate, Title, Description, Status)
             VALUES (?, ?, ?, ?)`,
             [ taskToAdd.creationDate,
@@ -54,15 +49,10 @@ const addSQLTask = async (taskToAdd: OrganizerTask) => {
               taskToAdd.status ]
         );
         return;
-    } catch (error) {
-        return error;
-    }
 };
 
 const updateSQLTask = async (taskToUpdate: OrganizerTask) => {
-    try {
-        const db = await SQLite.openDatabase(organizerDatabaseParams);
-        await db.executeSql(
+        await mainDB.executeSql(
             `UPDATE Tasks
             SET CreationDate = ?, Title = ?, Description = ?, Status = ?
             WHERE ID = ?`,
@@ -73,24 +63,16 @@ const updateSQLTask = async (taskToUpdate: OrganizerTask) => {
               taskToUpdate.id ]
         );
         return;
-    } catch (error) {
-        return error;
-    }
 };
 
 const deleteSQLTask = async (taskToDeleteId: string) => {
-    try {
-        const db = await SQLite.openDatabase(organizerDatabaseParams);
-        await db.executeSql(
+        await mainDB.executeSql(
             `UPDATE Tasks
             SET Status = 'deleted'
             WHERE ID = ?`,
             [ taskToDeleteId ]
         );
         return;
-    } catch (error) {
-        return error;
-    }
 };
 
 export { initializeDatabase, selectSQLTasks, addSQLTask, updateSQLTask, deleteSQLTask };

@@ -3,6 +3,7 @@ import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { useMutation } from 'react-query';
 
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
@@ -34,6 +35,8 @@ const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
   const [screenMode, setScreenMode] = useState(OrganizerViewerEditorModes.view);
   const [taskItem, setTaskItem] = useState(taskToShowAndEdit);
 
+  const updateTaskMutation = useMutation(updateSQLTask);
+
   const toggleScreenModeAndSaveTask = useCallback(async () => {
     if (screenMode === OrganizerViewerEditorModes.view) {
       setScreenMode(OrganizerViewerEditorModes.edit);
@@ -44,7 +47,7 @@ const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
       return;
     }
     try {
-      await updateSQLTask(taskItem);
+      await updateTaskMutation.mutateAsync(taskItem);
       listScreenRefreshCallback();
       setScreenMode(OrganizerViewerEditorModes.view);
     } catch (error) {

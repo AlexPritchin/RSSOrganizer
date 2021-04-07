@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { useMutation } from 'react-query';
 
 import { OrganizerTask } from '../../../models/OrganizerTask';
 
@@ -28,6 +29,8 @@ type Props = {
 const OrganizerTaskCreatorScreen: React.FC<Props> = props => {
   const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', 0, '', '', OrganizerTaskStatuses.active));
   
+  const addTaskMutation = useMutation(addSQLTask);
+
   const listScreenRefreshCallback = props.route.params.refreshTasksCallback;
 
   const saveTask = useCallback(async () => {
@@ -37,7 +40,7 @@ const OrganizerTaskCreatorScreen: React.FC<Props> = props => {
     }
     try {
       taskToAdd.creationDate = new Date().getTime();
-      await addSQLTask(taskToAdd);
+      await addTaskMutation.mutateAsync(taskToAdd);
       listScreenRefreshCallback();
       props.navigation.pop();
     } catch (error) {

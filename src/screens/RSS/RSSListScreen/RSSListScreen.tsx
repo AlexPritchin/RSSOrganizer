@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FlatList, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useQuery } from 'react-query';
 
 import { RSSScreensNames } from '../../../constants/ScreensNames';
-import { DataLoadingStatuses } from '../../../constants/DataLoadingStatuses';
 import { screenMessages } from '../../../constants/MessageConstants';
 
 import { RSSArticle } from '../../../models/RSSArticle';
@@ -25,30 +25,7 @@ type Props = {
 };
 
 const RSSListScreen: React.FC<Props> = props => {
-  const [rssArticlesList, setRssArticlesList] = useState<RSSArticle[]>([]);
-  const [dataLoadingStatus, setDataLoadingStatus] = useState(
-    DataLoadingStatuses.loading
-  );
-
-  useEffect(() => {
-    const fetchRSSData = async () => {
-      try {
-        const RSSData = await getRSSArticles();
-        if (RSSData.length === 0) {
-          setDataLoadingStatus(DataLoadingStatuses.noData);
-        } else {
-          setRssArticlesList(RSSData);
-          setDataLoadingStatus(DataLoadingStatuses.success);
-        }
-      } catch (error) {
-        setDataLoadingStatus(DataLoadingStatuses.error);
-      }
-    };
-
-    if (dataLoadingStatus === DataLoadingStatuses.loading) {
-      fetchRSSData();
-    }
-  }, [dataLoadingStatus]);
+  const queryResult = useQuery('fetchRSSFeed', getRSSArticles);
 
   const listItemPressCallback = (navigation: RSSListScreenNavigationProp, articleItemToPassToDetails: RSSArticle) => {
     navigation.push(RSSScreensNames.RSSDetails, {
@@ -68,16 +45,16 @@ const RSSListScreen: React.FC<Props> = props => {
   };
 
   const reloadButtonPressCallback = () => {
-    setDataLoadingStatus(DataLoadingStatuses.loading);
+    queryResult.refetch();
   };
 
   const loadingOutput = ( <DataLoadingView /> );
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
-      messageText={dataLoadingStatus === DataLoadingStatuses.noData
-                    ? screenMessages.noDataRSS
-                    : screenMessages.error}
+      messageText={queryResult.isError
+                    ? screenMessages.error
+                    : screenMessages.noDataRSS}
       onReloadButtonPress={reloadButtonPressCallback}
     />
   );
@@ -85,21 +62,20 @@ const RSSListScreen: React.FC<Props> = props => {
   const successOutput = (
     <View style={styles.rssListContainer}>
       <FlatList
-        data={rssArticlesList}
+        data={queryResult.data}
         renderItem={itemData => renderRSSListItem(itemData.item)}
         showsVerticalScrollIndicator={false}
       />
     </View>
   );
 
-  switch (dataLoadingStatus) {
-    case DataLoadingStatuses.loading:
-      return loadingOutput;
-    case DataLoadingStatuses.success:
-      return successOutput;
-    default:
-      return noDataOrErrorOutput;
+  if (queryResult.isLoading) {
+    return loadingOutput;
   }
+  if (queryResult.isSuccess) {
+    return successOutput;
+  }
+  return noDataOrErrorOutput;
 };
 
 export default RSSListScreen;

@@ -2,6 +2,7 @@ import React from 'react';
 import { enableScreens } from 'react-native-screens';
 import { LogBox, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { initializeDatabase } from './src/services/data/Organizer/OrganizerDBDataService';
 
@@ -13,6 +14,8 @@ enableScreens();
 
 initializeDatabase();
 
+const queryClient = new QueryClient();
+
 export default function App() {
   LogBox.ignoreLogs([
     'It appears that you are using old version of react-navigation library',
@@ -20,9 +23,11 @@ export default function App() {
     'Your project is accessing'
   ]);
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={Colors.statusBarBackgroundColor} />
-      <BottomTabNavigator />
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <StatusBar backgroundColor={Colors.statusBarBackgroundColor} />
+        <BottomTabNavigator />
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 };
