@@ -6,12 +6,13 @@ import styles from './BlueButtonStyles';
 interface Props {
   style: StyleProp<ViewStyle>;
   title: string;
+  disabled?: boolean | null;
   onButtonPress: Function;
 };
 
 const BlueButton: React.FC<Props> = props => {
   return (
-    <TouchableOpacity onPress={() => {
+    <TouchableOpacity disabled={props.disabled} onPress={() => {
       props.onButtonPress();
     }}>
         <View style={[styles.buttonContainer, props.style]}>

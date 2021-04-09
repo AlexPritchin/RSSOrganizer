@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, View, ScrollView, TextInput } from 'react-native';
+import React, { Fragment } from 'react';
+import { TouchableWithoutFeedback, Keyboard, View, ScrollView, TextInput, Text } from 'react-native';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
 import { Colors } from '../../../constants/Colors';
+
+import BlueButton from '../../General/BlueButton/BlueButton';
 
 import styles from './OrganizerTextFieldsEditorStyles';
 
@@ -9,6 +13,7 @@ interface Props {
   initialTaskTitle: string;
   initialTaskDescription: string;
   updateTaskCallback: Function;
+  updateFormValidationAndSubmitCallback: Function;
 };
 
 export interface TaskTextFieldsObject {
@@ -17,26 +22,15 @@ export interface TaskTextFieldsObject {
 };
 
 const OrganizerTextFieldsEditor: React.FC<Props> = props => {
-  const { initialTaskTitle, initialTaskDescription, updateTaskCallback } = props;
+  const { initialTaskTitle,
+          initialTaskDescription,
+          updateTaskCallback,
+          updateFormValidationAndSubmitCallback } = props;
 
-  const [taskTitle, setTaskTitle] = useState(initialTaskTitle);
-  const [taskDescription, setTaskDescription] = useState(initialTaskDescription);
-
-  const titleTextInputTextChangeHandler = (newText: string) => {
-    setTaskTitle(newText);
-    updateTaskCallback({
-        title: newText,
-        description: taskDescription
-    });
-  };
-
-  const descriptionTextInputTextChangeHandler = (newText: string) => {
-    setTaskDescription(newText);
-    updateTaskCallback({
-        title: taskTitle,
-        description: newText
-    });
-  };
+  let taskValidationSchema = yup.object().shape({
+    title: yup.string().required(),
+    description: yup.string().required().max(500)
+  });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -45,22 +39,54 @@ const OrganizerTextFieldsEditor: React.FC<Props> = props => {
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}
         >
-          <TextInput
-            style={styles.titleInput}
-            selectionColor={Colors.textInputsSelectionColor}
-            placeholder="Task title"
-            onChangeText={titleTextInputTextChangeHandler}
-            value={taskTitle}
-          />
-          <TextInput
-            style={styles.decriptionInput}
-            selectionColor={Colors.textInputsSelectionColor}
-            placeholder="Task description"
-            multiline={true}
-            maxLength={500}
-            onChangeText={descriptionTextInputTextChangeHandler}
-            value={taskDescription}
-          />
+          <Formik
+            initialValues={{ title: initialTaskTitle, description: initialTaskDescription }}
+            validationSchema={taskValidationSchema}
+            onSubmit={(values) => {
+              updateTaskCallback(values);
+            }}
+          >
+            {({ values, touched, errors, isValid, setFieldTouched, handleChange, handleSubmit }) => {
+              updateFormValidationAndSubmitCallback(isValid, handleSubmit);
+              const showTitleError = touched.title && errors.title;
+              const showDescriptionError = touched.description && errors.description;
+              return (
+              <Fragment>
+                <TextInput
+                  style={[styles.titleInput, showTitleError ? {borderBottomColor: Colors.deleteIconColor} : null]}
+                  selectionColor={Colors.textInputsSelectionColor}
+                  placeholder="Task title"
+                  onChange={() => setFieldTouched('title')}
+                  onChangeText={handleChange('title')}
+                  value={values.title}
+                  />
+                {showTitleError
+                    ? <Text style={styles.titleErrorText}>{errors.title}</Text>
+                    : null
+                }
+                <TextInput
+                  style={[styles.decriptionInput, showDescriptionError ? {borderColor: Colors.deleteIconColor} : null]}
+                  selectionColor={Colors.textInputsSelectionColor}
+                  placeholder="Task description"
+                  multiline={true}
+                  onChange={() => setFieldTouched('description')}
+                  onChangeText={handleChange('description')}
+                  value={values.description}
+                  />
+                {showDescriptionError
+                    ? <Text style={styles.decriptionErrorText}>{errors.description}</Text>
+                    : null
+                }
+                <BlueButton
+                  style={styles.submitButton}
+                  title='Save'
+                  disabled={!isValid}
+                  onButtonPress={handleSubmit}
+                />
+              </Fragment>
+            );
+            }}
+          </Formik>
         </ScrollView>
       </View>
     </TouchableWithoutFeedback>

@@ -14,7 +14,7 @@ const GeneralHeaderButtonComponent: React.FC<any> = props => {
       IconComponent={IoniconsIcon}
       iconSize={27}
       color={Platform.OS === 'android' ? Colors.headerTextColor : Colors.backgroundHeaderColor}
-      buttonStyle={props.title === undefined ? {} : styles.buttonStyle}
+      buttonStyle={props.title === '' ? {} : styles.buttonStyle}
     />
   );
 };

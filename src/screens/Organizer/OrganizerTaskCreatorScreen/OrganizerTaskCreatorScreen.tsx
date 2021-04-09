@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -27,52 +27,57 @@ type Props = {
 };
 
 const OrganizerTaskCreatorScreen: React.FC<Props> = props => {
-  const [taskToAdd, setTaskToAdd] = useState(new OrganizerTask('0', 0, '', '', OrganizerTaskStatuses.active));
+  const taskToAdd = useRef(new OrganizerTask('0', 0, '', '', OrganizerTaskStatuses.active));
+  const taskFormValid = useRef(false);
+  const taskFormSubmitFunction = useRef(new Function());
   
   const addTaskMutation = useMutation(addSQLTask);
 
   const listScreenRefreshCallback = props.route.params.refreshTasksCallback;
 
-  const saveTask = useCallback(async () => {
-    if (!validateInputs()) {
-      Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
-      return;
+  const saveTaskFromHeader = useCallback(() => {
+    if (taskFormValid.current) {
+      taskFormSubmitFunction.current();
     }
+  }, [taskFormValid, taskFormSubmitFunction]);
+  
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+          <Item title="Save" onPress={saveTaskFromHeader} />
+        </HeaderButtons>
+      ),
+    });
+  }, [props.navigation, saveTaskFromHeader]);
+  
+  const saveTask = async () => {
     try {
-      taskToAdd.creationDate = new Date().getTime();
-      await addTaskMutation.mutateAsync(taskToAdd);
+      taskToAdd.current.creationDate = new Date().getTime();
+      await addTaskMutation.mutateAsync(taskToAdd.current);
       listScreenRefreshCallback();
       props.navigation.pop();
     } catch (error) {
       Alert.alert(alertHeaders.dbError, alertMessages.error);
     }
-  }, [taskToAdd]);
+  };
 
-  useLayoutEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-          <Item title="Save" onPress={saveTask} />
-        </HeaderButtons>
-      ),
-    });
-  }, [props.navigation, saveTask]);
-  
-  const validateInputs = () => taskToAdd.title !== '' && taskToAdd.description !== '';
+  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: Function) => {
+    taskFormValid.current = isFormValid;
+    taskFormSubmitFunction.current = formSubmitFunction;
+  };
 
   const updateTaskFromTextFieldsEditor = (editorData: TaskTextFieldsObject) => {
-    setTaskToAdd(currentTask => {
-      const newTask = Object.assign({}, currentTask);
-      newTask.title = editorData.title;
-      newTask.description = editorData.description;
-      return newTask;
-    });
+    taskToAdd.current.title = editorData.title;
+    taskToAdd.current.description = editorData.description;
+    saveTask();
   };
 
   return (
     <OrganizerTextFieldsEditor
-      initialTaskTitle={taskToAdd.title}
-      initialTaskDescription={taskToAdd.description}
+      initialTaskTitle={taskToAdd.current.title}
+      initialTaskDescription={taskToAdd.current.description}
+      updateFormValidationAndSubmitCallback={updateFormValidationStateAndSubmitCallback}
       updateTaskCallback={updateTaskFromTextFieldsEditor}
     />
   );

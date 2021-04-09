@@ -1,9 +1,11 @@
-import React, { useState, useCallback, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useLayoutEffect, useRef } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { useMutation } from 'react-query';
+
+import { OrganizerTask } from '../../../models/OrganizerTask';
 
 import { OrganizerViewerEditorModes } from '../../../constants/OrganizerConstants';
 import { alertHeaders, alertMessages } from '../../../constants/MessageConstants';
@@ -34,45 +36,55 @@ const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
   
   const [screenMode, setScreenMode] = useState(OrganizerViewerEditorModes.view);
   const [taskItem, setTaskItem] = useState(taskToShowAndEdit);
+  const taskFormValid = useRef(false);
+  const taskFormSubmitFunction = useRef(new Function());
 
   const updateTaskMutation = useMutation(updateSQLTask);
 
-  const toggleScreenModeAndSaveTask = useCallback(async () => {
+  const toggleScreenModeAndSaveTaskFromHeader = useCallback(async () => {
     if (screenMode === OrganizerViewerEditorModes.view) {
       setScreenMode(OrganizerViewerEditorModes.edit);
       return;
     }
-    if (!validateInputs()) {
-      Alert.alert(alertHeaders.validationError, alertMessages.fieldsNotEmpty);
-      return;
+    if (taskFormValid.current) {
+      taskFormSubmitFunction.current();
     }
+  }, [screenMode, taskItem]);
+
+  const saveTask = async (taskToSave: OrganizerTask) => {
+    console.log(taskToSave);
     try {
-      await updateTaskMutation.mutateAsync(taskItem);
+      await updateTaskMutation.mutateAsync(taskToSave);
       listScreenRefreshCallback();
       setScreenMode(OrganizerViewerEditorModes.view);
     } catch (error) {
       Alert.alert(alertHeaders.dbError, alertMessages.error);
     }
-  }, [screenMode, taskItem]);
+  };
 
   useLayoutEffect(() => {
     props.navigation.setOptions({
       headerTitle: screenMode === OrganizerViewerEditorModes.edit ? 'Edit task' : 'View task',
       headerRight: () => (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
-        <Item title={screenMode === OrganizerViewerEditorModes.edit ? 'Save' : 'Edit'} onPress={toggleScreenModeAndSaveTask} />
+        <Item title={screenMode === OrganizerViewerEditorModes.edit ? 'Save' : 'Edit'} onPress={toggleScreenModeAndSaveTaskFromHeader} />
       </HeaderButtons>),
     });
-  }, [props.navigation, toggleScreenModeAndSaveTask]);
-
-  const validateInputs = () => taskItem.title !== '' && taskItem.description !== '';
+  }, [props.navigation, toggleScreenModeAndSaveTaskFromHeader]);
   
+  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: Function) => {
+    taskFormValid.current = isFormValid;
+    taskFormSubmitFunction.current = formSubmitFunction;
+  };
+
   const updateTaskFromTextFieldsEditor = (editorData: TaskTextFieldsObject) => {
     setTaskItem(currentTask => {
       const newTask = Object.assign({}, currentTask);
       newTask.title = editorData.title;
       newTask.description = editorData.description;
+      saveTask(newTask);
       return newTask;
     });
+
   };
 
   if (screenMode === OrganizerViewerEditorModes.view) {
@@ -89,6 +101,7 @@ const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
     <OrganizerTextFieldsEditor
       initialTaskTitle={taskItem.title}
       initialTaskDescription={taskItem.description}
+      updateFormValidationAndSubmitCallback={updateFormValidationStateAndSubmitCallback}
       updateTaskCallback={updateTaskFromTextFieldsEditor}
     />
   );
