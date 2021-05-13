@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, RefreshControl } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +17,6 @@ import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/
 
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
-import DataLoadingView from '../../../components/General/DataLoadingView/DataLoadingView';
 import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
 
 import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator';
@@ -134,8 +133,6 @@ const OrganizerListScreen: React.FC<Props> = props => {
     queryResult.refetch();
   };
 
-  const loadingOutput = ( <DataLoadingView /> );
-
   const noDataOrErrorOutput = (
     <ScreenMessageView
       messageText={queryResult.isError
@@ -145,11 +142,13 @@ const OrganizerListScreen: React.FC<Props> = props => {
     />
   );
 
-  const successOutput = (
+  return (
     <View style={styles.organizerListContainer}>
       <SwipeListView
         data={queryResult.data}
         keyExtractor={item => item.id}
+        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={queryResult.isLoading} onRefresh={() => queryResult.refetch()} />}
+        ListEmptyComponent={queryResult.isLoading ? null : noDataOrErrorOutput}
         renderItem={itemData => renderOrganizerTaskItem(itemData.item)}
         renderHiddenItem={renderOrganizerTaskHiddenItem}
         leftOpenValue={100}
@@ -165,14 +164,6 @@ const OrganizerListScreen: React.FC<Props> = props => {
       />
     </View>
   );
-
-  if (queryResult.isLoading) {
-    return loadingOutput;
-  }
-  if (queryResult.isSuccess) {
-    return successOutput;
-  }
-  return noDataOrErrorOutput;
   
 };
 

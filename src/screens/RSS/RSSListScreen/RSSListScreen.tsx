@@ -1,17 +1,17 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, RefreshControl } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useQuery } from 'react-query';
 
 import { RSSScreensNames } from '../../../constants/ScreensNames';
 import { screenMessages } from '../../../constants/MessageConstants';
+import { Colors } from '../../../constants/Colors';
 
 import { RSSArticle } from '../../../models/RSSArticle';
 
 import { getRSSArticles } from '../../../services/data/RSS/RSSDataService';
 
 import RSSListItem from '../../../components/RSS/RSSListItem/RSSListItem';
-import DataLoadingView from '../../../components/General/DataLoadingView/DataLoadingView';
 import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
 
 import { RSSStackParamList } from '../../../navigation/RSSNavigator';
@@ -48,8 +48,6 @@ const RSSListScreen: React.FC<Props> = props => {
     queryResult.refetch();
   };
 
-  const loadingOutput = ( <DataLoadingView /> );
-
   const noDataOrErrorOutput = (
     <ScreenMessageView
       messageText={queryResult.isError
@@ -59,23 +57,18 @@ const RSSListScreen: React.FC<Props> = props => {
     />
   );
 
-  const successOutput = (
+  return (
     <View style={styles.rssListContainer}>
       <FlatList
         data={queryResult.data}
+        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={queryResult.isLoading} onRefresh={() => queryResult.refetch()} />}
+        ListEmptyComponent={queryResult.isLoading ? null : noDataOrErrorOutput}
         renderItem={itemData => renderRSSListItem(itemData.item)}
         showsVerticalScrollIndicator={false}
       />
     </View>
   );
 
-  if (queryResult.isLoading) {
-    return loadingOutput;
-  }
-  if (queryResult.isSuccess) {
-    return successOutput;
-  }
-  return noDataOrErrorOutput;
 };
 
 export default RSSListScreen;

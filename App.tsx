@@ -16,6 +16,12 @@ initializeDatabase();
 
 const queryClient = new QueryClient();
 
+queryClient.setDefaultOptions({
+  queries: {
+    retry: false
+  }
+});
+
 export default function App() {
   LogBox.ignoreLogs([
     'It appears that you are using old version of react-navigation library',
