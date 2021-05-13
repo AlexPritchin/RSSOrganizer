@@ -7,7 +7,7 @@ interface Props {
   style: StyleProp<ViewStyle>;
   title: string;
   disabled?: boolean | null;
-  onButtonPress: Function;
+  onButtonPress: () => void;
 };
 
 const BlueButton: React.FC<Props> = props => {

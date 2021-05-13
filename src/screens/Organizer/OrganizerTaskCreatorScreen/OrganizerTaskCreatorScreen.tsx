@@ -14,7 +14,7 @@ import { OrganizerScreensNames } from '../../../constants/ScreensNames';
 import { addSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
-import OrganizerTextFieldsEditor, { TaskTextFieldsObject } from '../../../components/Organizer/OrganizerTextFieldsEditor/OrganizerTextFieldsEditor';
+import OrganizerTextFieldsEditor, { TaskTextFieldsObject, FormSubmitFunction } from '../../../components/Organizer/OrganizerTextFieldsEditor/OrganizerTextFieldsEditor';
 
 import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator';
 
@@ -62,7 +62,7 @@ const OrganizerTaskCreatorScreen: React.FC<Props> = props => {
     }
   };
 
-  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: Function) => {
+  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: FormSubmitFunction) => {
     taskFormValid.current = isFormValid;
     taskFormSubmitFunction.current = formSubmitFunction;
   };

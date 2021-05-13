@@ -7,7 +7,6 @@ import RSSDetailsScreen from '../screens/RSS/RSSDetailsScreen/RSSDetailsScreen';
 import { RSSArticle } from '../models/RSSArticle';
 
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
-import { RSSScreensNames } from '../constants/ScreensNames';
 
 export type RSSStackParamList = {
     RSSList: undefined;
@@ -22,14 +21,14 @@ const RSSNavigator = () => {
             screenOptions={DefaultStackNavigationOptions}
         >
             <Stack.Screen 
-                name={RSSScreensNames.RSSList}
+                name={'RSSList'}
                 component={RSSListScreen}
                 options={{
                     headerTitle: 'The NY Times RSS: Europe'
                 }}
             />
             <Stack.Screen 
-                name={RSSScreensNames.RSSDetails}
+                name={'RSSDetails'}
                 component={RSSDetailsScreen}
                 options={{
                     headerBackTitleVisible: false

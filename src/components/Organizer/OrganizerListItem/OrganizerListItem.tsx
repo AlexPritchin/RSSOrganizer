@@ -12,7 +12,7 @@ import styles from './OrganizerListItemStyles';
 
 interface Props {
   taskItem: OrganizerTask;
-  onTaskItemPress: Function;
+  onTaskItemPress: () => void;
 };
 
 const OrganizerListItem: React.FC<Props> = props => {

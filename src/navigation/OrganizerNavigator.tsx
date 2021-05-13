@@ -8,12 +8,11 @@ import OrganizerTaskCreatorScreen from '../screens/Organizer/OrganizerTaskCreato
 import { OrganizerTask } from '../models/OrganizerTask';
 
 import { DefaultStackNavigationOptions } from '../constants/GlobalNavigationOptions';
-import { OrganizerScreensNames } from '../constants/ScreensNames';
 
 export type OrganizerStackParamList = {
     OrganizerList: undefined;
-    OrganizerTaskCreator: { refreshTasksCallback: Function };
-    OrganizerTaskViewerEditor: { taskToViewOrUpdate: OrganizerTask, refreshTasksCallback: Function };
+    OrganizerTaskCreator: { refreshTasksCallback: () => void };
+    OrganizerTaskViewerEditor: { taskToViewOrUpdate: OrganizerTask, refreshTasksCallback: () => void };
 }
 
 const Stack = createStackNavigator<OrganizerStackParamList>();
@@ -24,14 +23,14 @@ const OrganizerNavigator = () => {
             screenOptions={DefaultStackNavigationOptions}
         >
             <Stack.Screen 
-                name={OrganizerScreensNames.OrganizerList}
+                name={'OrganizerList'}
                 component={OrganizerListScreen}
                 options={{
                     headerTitle: 'Tasks'
                 }}
             />
             <Stack.Screen 
-                name={OrganizerScreensNames.OrganizerTaskCreator}
+                name={'OrganizerTaskCreator'}
                 component={OrganizerTaskCreatorScreen}
                 options={{
                     headerTitle: 'Add task',
@@ -39,7 +38,7 @@ const OrganizerNavigator = () => {
                 }}
             />
             <Stack.Screen 
-                name={OrganizerScreensNames.OrganizerTaskViewerEditor}
+                name={'OrganizerTaskViewerEditor'}
                 component={OrganizerTaskViewerEditorScreen}
                 options={{
                     headerBackTitleVisible: false

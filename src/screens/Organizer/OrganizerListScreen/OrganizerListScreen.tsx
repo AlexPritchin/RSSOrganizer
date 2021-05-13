@@ -36,7 +36,7 @@ interface SwipeViewActionStatusChangeData {
 };
 
 const OrganizerListScreen: React.FC<Props> = props => {
-  const queryResult = useQuery('selectOrganizerTasks', selectSQLTasks);
+  const { isLoading, isError, data, refetch } = useQuery('selectOrganizerTasks', selectSQLTasks);
   const updateTaskMutation = useMutation(updateSQLTask);
   const deleteTaskMutation = useMutation(deleteSQLTask);
 
@@ -44,7 +44,7 @@ const OrganizerListScreen: React.FC<Props> = props => {
       Alert.alert(Messages.alertHeaders.dbError, Messages.alertMessages.error);
   };
 
-  const forceTasksRefresh = () => queryResult.refetch();
+  const forceTasksRefresh = () => refetch();
 
   const goToTaskCreatorScreen = useCallback(() => {
     props.navigation.push(OrganizerScreensNames.OrganizerTaskCreator, {
@@ -72,7 +72,7 @@ const OrganizerListScreen: React.FC<Props> = props => {
       return;
     }
     try {
-      const taskToChange = queryResult.data?.find(task => task.id === rowData.key);
+      const taskToChange = data?.find(task => task.id === rowData.key);
       if (taskToChange) {
         taskToChange.status = OrganizerTaskStatuses.completed;
         await updateTaskMutation.mutateAsync(taskToChange);
@@ -130,12 +130,12 @@ const OrganizerListScreen: React.FC<Props> = props => {
   };
 
   const reloadButtonPressCallback = () => {
-    queryResult.refetch();
+    refetch();
   };
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
-      messageText={queryResult.isError
+      messageText={isError
                     ? Messages.screenMessages.error
                     : Messages.screenMessages.noDataOrganizer}
       onReloadButtonPress={reloadButtonPressCallback}
@@ -145,10 +145,10 @@ const OrganizerListScreen: React.FC<Props> = props => {
   return (
     <View style={styles.organizerListContainer}>
       <SwipeListView
-        data={queryResult.data}
+        data={data}
         keyExtractor={item => item.id}
-        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={queryResult.isLoading} onRefresh={() => queryResult.refetch()} />}
-        ListEmptyComponent={queryResult.isLoading ? null : noDataOrErrorOutput}
+        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={isLoading} onRefresh={() => refetch()} />}
+        ListEmptyComponent={isLoading ? null : noDataOrErrorOutput}
         renderItem={itemData => renderOrganizerTaskItem(itemData.item)}
         renderHiddenItem={renderOrganizerTaskHiddenItem}
         leftOpenValue={100}

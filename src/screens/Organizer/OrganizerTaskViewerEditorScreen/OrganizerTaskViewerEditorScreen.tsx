@@ -16,7 +16,7 @@ import { formatDateToString } from '../../../utils/DateFormatter';
 import { updateSQLTask } from '../../../services/data/Organizer/OrganizerDBDataService';
 
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
-import OrganizerTextFieldsEditor, { TaskTextFieldsObject } from '../../../components/Organizer/OrganizerTextFieldsEditor/OrganizerTextFieldsEditor';
+import OrganizerTextFieldsEditor, { TaskTextFieldsObject, FormSubmitFunction } from '../../../components/Organizer/OrganizerTextFieldsEditor/OrganizerTextFieldsEditor';
 
 import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator';
 
@@ -71,7 +71,7 @@ const OrganizerTaskViewerEditorScreen: React.FC<Props> = props => {
     });
   }, [props.navigation, toggleScreenModeAndSaveTaskFromHeader]);
   
-  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: Function) => {
+  const updateFormValidationStateAndSubmitCallback = (isFormValid: boolean, formSubmitFunction: FormSubmitFunction) => {
     taskFormValid.current = isFormValid;
     taskFormSubmitFunction.current = formSubmitFunction;
   };

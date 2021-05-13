@@ -7,7 +7,7 @@ import styles from './RSSListItemStyles';
 
 interface Props {
   articleItem: RSSArticle;
-  onListItemPress: Function;
+  onListItemPress: () => void;
 };
 
 const RSSListItem: React.FC<Props> = props => {

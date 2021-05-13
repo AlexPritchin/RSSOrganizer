@@ -25,7 +25,7 @@ type Props = {
 };
 
 const RSSListScreen: React.FC<Props> = props => {
-  const queryResult = useQuery('fetchRSSFeed', getRSSArticles);
+  const { isLoading, isError, data, refetch } = useQuery('fetchRSSFeed', getRSSArticles);
 
   const listItemPressCallback = (navigation: RSSListScreenNavigationProp, articleItemToPassToDetails: RSSArticle) => {
     navigation.push(RSSScreensNames.RSSDetails, {
@@ -45,12 +45,12 @@ const RSSListScreen: React.FC<Props> = props => {
   };
 
   const reloadButtonPressCallback = () => {
-    queryResult.refetch();
+    refetch();
   };
 
   const noDataOrErrorOutput = (
     <ScreenMessageView
-      messageText={queryResult.isError
+      messageText={isError
                     ? screenMessages.error
                     : screenMessages.noDataRSS}
       onReloadButtonPress={reloadButtonPressCallback}
@@ -60,9 +60,9 @@ const RSSListScreen: React.FC<Props> = props => {
   return (
     <View style={styles.rssListContainer}>
       <FlatList
-        data={queryResult.data}
-        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={queryResult.isLoading} onRefresh={() => queryResult.refetch()} />}
-        ListEmptyComponent={queryResult.isLoading ? null : noDataOrErrorOutput}
+        data={data}
+        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={isLoading} onRefresh={() => refetch()} />}
+        ListEmptyComponent={isLoading ? null : noDataOrErrorOutput}
         renderItem={itemData => renderRSSListItem(itemData.item)}
         showsVerticalScrollIndicator={false}
       />

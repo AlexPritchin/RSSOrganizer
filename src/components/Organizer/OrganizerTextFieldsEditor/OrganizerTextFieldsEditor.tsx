@@ -9,11 +9,13 @@ import BlueButton from '../../General/BlueButton/BlueButton';
 
 import styles from './OrganizerTextFieldsEditorStyles';
 
+export type FormSubmitFunction = (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
+
 interface Props {
   initialTaskTitle: string;
   initialTaskDescription: string;
-  updateTaskCallback: Function;
-  updateFormValidationAndSubmitCallback: Function;
+  updateTaskCallback: (values: TaskTextFieldsObject) => void;
+  updateFormValidationAndSubmitCallback: (isValid: boolean, handleSubmit: FormSubmitFunction) => void;
 };
 
 export interface TaskTextFieldsObject {

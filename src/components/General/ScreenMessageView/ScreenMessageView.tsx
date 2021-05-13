@@ -7,7 +7,7 @@ import styles from './ScreenMessageViewStyles';
 
 interface Props {
   messageText: string;
-  onReloadButtonPress: Function;
+  onReloadButtonPress: () => void;
 };
 
 const ScreenMessageView: React.FC<Props> = props => {
