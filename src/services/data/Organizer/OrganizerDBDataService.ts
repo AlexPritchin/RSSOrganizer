@@ -16,7 +16,7 @@ SQLite.enablePromise(true);
 const initializeDatabase = async () => {
     try {
         mainDB = await SQLite.openDatabase(organizerDatabaseParams);
-        mainDB.executeSql(
+        await mainDB.executeSql(
             `CREATE TABLE IF NOT EXISTS Tasks (
             ID integer primary key not null,
             CreationDate integer,
@@ -26,7 +26,7 @@ const initializeDatabase = async () => {
             )`
         );
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 };
 
