@@ -2,7 +2,6 @@ import React, { useCallback, useLayoutEffect } from 'react';
 import { View, Alert, RefreshControl } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useQuery, useMutation } from 'react-query';
 
@@ -18,6 +17,7 @@ import { selectSQLTasks, updateSQLTask, deleteSQLTask } from '../../../services/
 import OrganizerListItem from '../../../components/Organizer/OrganizerListItem/OrganizerListItem';
 import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
 import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
+import DeleteIcon from '../../../components/Icons/Organizer/OrganizerDeleteIcon';
 
 import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator';
 
@@ -124,7 +124,7 @@ const OrganizerListScreen: React.FC<Props> = props => {
   const renderOrganizerTaskHiddenItem = () => {
     return (
       <View style={styles.organizerListItemHiddenItem}>
-          <FontAwesomeIcon name='trash' color={Colors.deleteIconColor} size={25}/>
+          <DeleteIcon color={Colors.deleteIconColor}/>
       </View>
     );
   };
