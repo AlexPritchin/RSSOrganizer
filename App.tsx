@@ -9,6 +9,8 @@ import { initializeDatabase } from './src/services/data/Organizer/OrganizerDBDat
 
 import BottomTabNavigator from './src/navigation/MainTabNavigator';
 
+import SignInScreen from './src/screens/Authorization/SignInScreen';
+
 import { Colors } from './src/constants/Colors';
 
 enableScreens();
@@ -23,6 +25,7 @@ queryClient.setDefaultOptions({
 
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
+  const [userSignedIn, setUserSignedIn] = useState(false);
 
   useEffect(() => {
     async function initDB() {
@@ -49,7 +52,9 @@ export default function App() {
     'Deprecation in \'navigationOptions\'',
     'Your project is accessing'
   ]);
-  return (
+  return !userSignedIn ? (
+    <SignInScreen userSignedInCallback={() => setUserSignedIn(true)} />
+  ) : (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <StatusBar backgroundColor={Colors.statusBarBackgroundColor} />

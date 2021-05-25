@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951275349179",
+    "project_id": "rssorganizer-c9381",
+    "storage_bucket": "rssorganizer-c9381.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951275349179:android:69b7e8ad9f414a8ca4759e",
+        "android_client_info": {
+          "package_name": "com.alexhome.rssorganizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951275349179-c3n3hueafk92nq1iacephb6mvfjai020.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5-xiG17648_0j07Fw8FtJnHUZLyxT4gY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951275349179-c3n3hueafk92nq1iacephb6mvfjai020.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
