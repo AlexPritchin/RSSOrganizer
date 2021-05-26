@@ -97,17 +97,17 @@ const RSSList: React.FC<ListProps> = props => {
 
   return (
     <View style={styles.rssListContainer}>
-                      <FlatList
-                        data={data}
-                        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={isLoading} onRefresh={() => refetch()} />}
-                        ListEmptyComponent={<ScreenMessageView
-                                              messageText={screenMessages.noDataRSS}
-                                              onReloadButtonPress={refetch}
-                                            />}
-                        renderItem={itemData => renderRSSListItem(itemData.item)}
-                        showsVerticalScrollIndicator={false}
-                      />
-                    </View>
+      <FlatList
+        data={data}
+        refreshControl={<RefreshControl colors={[Colors.tabNavigatorActiveTintColor]} refreshing={isLoading} onRefresh={() => refetch()} />}
+        ListEmptyComponent={<ScreenMessageView
+                              messageText={screenMessages.noDataRSS}
+                              onReloadButtonPress={refetch}
+                            />}
+        renderItem={itemData => renderRSSListItem(itemData.item)}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 

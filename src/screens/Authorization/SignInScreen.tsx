@@ -1,8 +1,8 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React from 'react';
 import { View, Text, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-import { alertHeaders, alertMessages } from '../../constants/MessageConstants';
+import { alertHeaders } from '../../constants/MessageConstants';
 
 import SignInForm, { UserCredentialsObject } from '../../components/Authorization/SignInForm/SignInForm';
 
@@ -14,7 +14,6 @@ type Props = {
 
 const SignInScreen: React.FC<Props> = props => {
   const trySignInUser = async (userCredentials: UserCredentialsObject) => {
-      console.log(userCredentials);
     try {
       await auth().signInWithEmailAndPassword(userCredentials.email, userCredentials.password);
       props.userSignedInCallback();

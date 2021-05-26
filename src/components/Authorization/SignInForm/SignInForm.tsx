@@ -13,7 +13,6 @@ export type FormSubmitFunction = (e?: React.FormEvent<HTMLFormElement> | undefin
 
 interface Props {
   userCredentialsSubmitCallback: (values: UserCredentialsObject) => void;
-  // updateFormValidationAndSubmitCallback: (isValid: boolean, handleSubmit: FormSubmitFunction) => void;
 };
 
 export interface UserCredentialsObject {
@@ -22,10 +21,6 @@ export interface UserCredentialsObject {
 };
 
 const SignInForm: React.FC<Props> = props => {
-  // const { initialTaskTitle,
-  //         initialTaskDescription,
-  //         updateTaskCallback,
-  //         updateFormValidationAndSubmitCallback } = props;
 
   let userCredentialsValidationSchema = yup.object().shape({
     email: yup.string().email().required(),
