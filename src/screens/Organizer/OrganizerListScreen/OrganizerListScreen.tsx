@@ -2,7 +2,9 @@ import React, { useCallback, useLayoutEffect } from 'react';
 import { View, Alert, RefreshControl } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useQuery, useMutation } from 'react-query';
 
 import { OrganizerScreensNames } from '../../../constants/ScreensNames';
@@ -23,7 +25,10 @@ import { OrganizerStackParamList } from '../../../navigation/OrganizerNavigator'
 
 import styles from './OrganizerListScreenStyles';
 
-type OrganizerListScreenNavigationProp = StackNavigationProp<OrganizerStackParamList, OrganizerScreensNames.OrganizerList>;
+type OrganizerListScreenNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<OrganizerStackParamList, OrganizerScreensNames.OrganizerList>,
+  DrawerNavigationProp<any>
+>;
 
 type Props = {
   navigation: OrganizerListScreenNavigationProp;
@@ -54,6 +59,11 @@ const OrganizerListScreen: React.FC<Props> = props => {
 
   useLayoutEffect(() => {
     props.navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+          <Item title='' iconName='drawer' onPress={() => {props.navigation.openDrawer();}} />
+        </HeaderButtons>
+      ),
       headerRight: () => (<HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
         <Item title='' iconName='add' onPress={goToTaskCreatorScreen} />
       </HeaderButtons>),

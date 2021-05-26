@@ -9,4 +9,8 @@ enum OrganizerScreensNames {
     OrganizerTaskCreator = 'OrganizerTaskCreator'
 };
 
-export { RSSScreensNames, OrganizerScreensNames };
+enum UserProfileScreensNames {
+    UserProfileSettings = 'UserProfileSettings',
+};
+
+export { RSSScreensNames, OrganizerScreensNames, UserProfileScreensNames };

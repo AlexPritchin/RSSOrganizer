@@ -1,8 +1,11 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useLayoutEffect } from 'react';
 import { FlatList, View, RefreshControl } from 'react-native';
+import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useQuery, QueryErrorResetBoundary } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import { RSSScreensNames } from '../../../constants/ScreensNames';
 import { screenMessages } from '../../../constants/MessageConstants';
@@ -15,12 +18,16 @@ import { getRSSArticles } from '../../../services/data/RSS/RSSDataService';
 import RSSListItem from '../../../components/RSS/RSSListItem/RSSListItem';
 import ScreenMessageView from '../../../components/General/ScreenMessageView/ScreenMessageView';
 import DataLoadingView from '../../../components/General/DataLoadingView/DataLoadingView';
+import GeneralHeaderButtonComponent from '../../../components/Navigation/NavigationHeader/GeneralHeaderButtonComponent';
 
 import { RSSStackParamList } from '../../../navigation/RSSNavigator';
 
 import styles from './RSSListScreenStyles';
 
-type RSSListScreenNavigationProp = StackNavigationProp<RSSStackParamList, RSSScreensNames.RSSList>;
+type RSSListScreenNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<RSSStackParamList, RSSScreensNames.RSSList>,
+  DrawerNavigationProp<any>
+>;
 
 type Props = {
   navigation: RSSListScreenNavigationProp;
@@ -28,6 +35,16 @@ type Props = {
 
 const RSSListScreen: React.FC<Props> = props => {
   
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={GeneralHeaderButtonComponent}>
+          <Item title='' iconName='drawer' onPress={() => {props.navigation.openDrawer();}} />
+        </HeaderButtons>
+      ),
+    });
+  }, [props.navigation]);
+
   const listItemPressCallback = (articleItemToPassToDetails: RSSArticle) => {
     props.navigation.push(RSSScreensNames.RSSDetails, {
       articleItem: articleItemToPassToDetails,

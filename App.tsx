@@ -7,7 +7,8 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { initializeDatabase } from './src/services/data/Organizer/OrganizerDBDataService';
 
-import BottomTabNavigator from './src/navigation/MainTabNavigator';
+// import BottomTabNavigator from './src/navigation/MainTabNavigator';
+import DrawerNavigator from './src/navigation/MainDrawerNavigator';
 
 import SignInScreen from './src/screens/Authorization/SignInScreen';
 
@@ -58,7 +59,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <StatusBar backgroundColor={Colors.statusBarBackgroundColor} />
-        <BottomTabNavigator />
+        {/* <BottomTabNavigator /> */}
+        <DrawerNavigator />
       </NavigationContainer>
     </QueryClientProvider>
   );

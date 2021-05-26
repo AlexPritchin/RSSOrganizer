@@ -9,8 +9,8 @@ import OrganizerNavigator from './OrganizerNavigator';
 
 import { Colors } from '../constants/Colors';
 
-import RSSIcon from '../components/Icons/General/TabBarRSSIcon';
-import OrganizerIcon from '../components/Icons/General/TabBarOrganizerIcon';
+import RSSIcon from '../components/Icons/Navigation/MainTabBarNavigator/TabBarRSSIcon';
+import OrganizerIcon from '../components/Icons/Navigation/MainTabBarNavigator/TabBarOrganizerIcon';
 
 const BottomTab = createBottomTabNavigator();
 const MaterialTab = createMaterialBottomTabNavigator();
